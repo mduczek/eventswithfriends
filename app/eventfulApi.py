@@ -48,8 +48,8 @@ def getCategories():
 
 
 """ Filters all performers, either keywords parameter or category is required """
-@app.route("/eventful_api/filter_performers/<keywords>", methods=["GET"])
-@app.route("/eventful_api/filter_performers/<category>", methods=["GET"])
+@app.route("/eventful_api/filter_performers/keywords/<keywords>", methods=["GET"])
+@app.route("/eventful_api/filter_performers/category/<category>", methods=["GET"])
 @app.route("/eventful_api/filter_performers/<keywords>/<category>", methods=["GET"])
 def filterPerformers(keywords=None, category=None):
     searchString = ""
