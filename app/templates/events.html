@@ -10,13 +10,17 @@
         {% for event in events %}
         <div class="col-sm-4">
             <div class="col-sm-12 event" style="position: relative">
-                <h4 class="col-sm-12">{{ event.title }}</h4>
+                <div class="pull-right reject col-sm-1 col-sm-offset-12" style="padding-top: 12px"><i class="glyphicon glyphicon-remove">&nbsp;</i></div>
+                <h4 class="col-sm-12 title">{{ event.title }}</h4>
                 <div class="col-sm-10 col-sm-offset-1">
                     {% if event.image|length > 0 %}
                     <img src="{{ event.image }}" class="event_picture"/>
                     {% else %}
                     <img src="/static/img/placeholder-03.png" class="event_picture"/>
                     {% endif %}
+                </div>
+                <div class="col-sm-12 description">
+                    <p>{{ event.description|safe }}</p>
                 </div>
                 <div class="col-sm-10 col-sm-offset-1">
                     <p class="address">{{ event.address }}</p>
