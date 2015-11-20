@@ -1,11 +1,9 @@
-// A map holding our friends and info colected about them
 var myFriends = {};
 
 var collectedPhotosData = [];
 var collectedMyPostsData = [];
 
 function getBestFriends() {
-	K = 20;
 	_getBestFriends();
 
 	var friendIds = Object.keys(myFriends);
@@ -24,17 +22,10 @@ function getBestFriends() {
 	    return 0;
 	});
 
-	var topBestFriends = [];
-	if (friendsPairs.length < K) {
-		K = friendsPairs.length;
-	}
+	var uid = FB.getUserID();
+	es_put_id("best_friends", uid, {"friends": friendsPairs}, function(){})
 
-	for (var i = 0; i < K; i++) {
-		topBestFriends.push([i, friendsPairs[i]]);
-	}
-	return topBestFriends;
 }
-
 
 function _getBestFriends() {
     // // Getting number of photos we are both tagged on
