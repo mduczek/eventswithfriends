@@ -4,6 +4,7 @@ import json
 class Event(object):
 
     def __init__(self, ident, title, url, description, user_id, address, datetime, suggested_friends = "", friend_id='', is_fb_event=True, priority=0, funness=0, image=''):
+        print ">>>> ", suggested_friends
         self.ident = ident
         self.title = title
         self.url = url

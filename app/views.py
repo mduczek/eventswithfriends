@@ -154,14 +154,28 @@ def sorted2(user):
           }
         }
       ],
-      "size": 20
+      "size": 100
       }
     r = requests.get(DB_PATH+'/events/_search', data=json.dumps(Q))
     hits = json.loads(r.text)
     events = []
+    r = requests.get(DB_PATH+'/preferences/_search')
+    prefs = json.loads(r.text)['hits']['hits']
+
     for res in hits['hits']['hits']:
         source = res['_source']
-        print source.keys()
+        best_friends = set()
+        for pref in prefs:
+            score = 0
+            interests_user_id = pref['_id']
+            interests = pref['_source']['interests']
+            for v in interests.values():
+                for x in v:
+                    if x in source['description']:
+                        score += 1
+            if score >= 1:
+                best_friends.add(interests_user_id)
+        source['suggested_friends'] = json.dumps(best_friends)
         events.append(Event(**source))
     return events
 
