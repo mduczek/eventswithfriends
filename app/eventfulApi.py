@@ -1,6 +1,6 @@
 from app import app
 from app.xmlToJson import xmlToJson
-from flask import make_response
+from flask import make_response, Response
 #import ConfigParser
 
 #config = ConfigParser.RawConfigParser()
