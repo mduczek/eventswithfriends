@@ -4,7 +4,7 @@ function FBinit(app_id) {
         appId: app_id,
         frictionlessRequests: true,
         status: true,
-        version: 'v2.1'
+        version: 'v2.3'
     });
 }
 
