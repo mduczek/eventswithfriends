@@ -6,7 +6,7 @@ function learning_main() {
 
 
     // TMP
-    setTimeout(function () {
-        redirect("/events");
-    }, 1000);
+    //setTimeout(function () {
+        //redirect("/events");
+    //}, 1000);
 }
