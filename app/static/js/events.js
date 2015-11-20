@@ -10,18 +10,7 @@ var promises2 = [];
 function hasClass( target, className ) {
         return new RegExp('(\\s|^)' + className + '(\\s|$)').test(target.className);
 }
-function getPicture(user, callback) {
-    log(user);
-    FB.api(
-            '/'+user+'/picture',
-            'GET',
-            {},
-            function(response) {
-                log("kdjflksjflsfj");
-                callback(response.data.url);
-            }
-          );   
-}
+
 $(function() {
     $(".description").click(function() {
         $(this).toggleClass("open");
@@ -180,10 +169,6 @@ function getEvents(description_q) {
     });
 }
 
-images = {
-    "100001711710125":"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/v/t1.0-1/p50x50/10547465_767005763366474_5606662814702399442_n.jpg?oh=a2cd0e40eb1a09c90f5ebf7432e29bb9&oe=56E86360&__gda__=1454426521_edc204f85ac9fd1f985200b2025be62d"
-}
-
 FB_EVENT_PREFIX = "https://www.facebook.com/events/";
 
 function create_events(events) {
@@ -268,6 +253,16 @@ function putUserFriendsEvents(callback) {
             }
         }
     );
+}
+
+function getPicture(user, callback) {
+dict = {
+    '100001711710125':"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/v/t1.0-1/p50x50/10547465_767005763366474_5606662814702399442_n.jpg?oh=a2cd0e40eb1a09c90f5ebf7432e29bb9&oe=56E86360&__gda__=1454426521_edc204f85ac9fd1f985200b2025be62d",
+    '1068248266548994':"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xtf1/v/t1.0-1/p50x50/11403395_989786231061865_2000113524457003408_n.jpg?oh=2f7d359528afb00ca81ec1955846eb28&oe=56F03B59&__gda__=1458088223_7283f6a607db2dadade417e70223b50b",
+    '1028130340601200': "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/v/t1.0-1/c4.0.50.50/p50x50/10622858_728083623939208_8659444378509310568_n.jpg?oh=492d425c0abbf74651090df072d70ef8&oe=56AEAB5F&__gda__=1459008521_6fa8b024411c704b781c7fca35b47a76",
+    '948792808528908':"https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/c31.31.385.385/s50x50/250282_134280409980156_6339287_n.jpg?oh=7745f09524107d2c1d2f61eee02412c4&oe=56F09492"
+}
+callback(dict[user]);
 }
 
 function pageAll(resp, data, callback) {
