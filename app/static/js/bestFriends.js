@@ -1,20 +1,33 @@
-// A map holding our friends and info colected about them
-var myFriends = new Map();
+var myFriends = {};
 
 var collectedPhotosData = [];
 var collectedMyPostsData = [];
 
-
-FB.api(
-  '/me/photos',
-  'GET',
-  {"fields":"tags{name}"},
-  function(response) {
-      // Insert your code here
-  }
-);
-
 function getBestFriends() {
+	_getBestFriends();
+
+	var friendIds = Object.keys(myFriends);
+	var friendsPairs = [];
+	for (var i=0; i<friendIds.length; i++) {
+	 	friendsPairs.push([friendIds[i], myFriends[friendIds[i]]]);
+	}
+
+	friendsPairs.sort(function(x, y){ 
+	    if (x[1] < y[1]) {
+	        return 1;
+	    }
+	    if (x[1] > y[1]) {
+	        return -1;
+	    }
+	    return 0;
+	});
+
+	var uid = FB.getUserID();
+	es_put_id("best_friends", uid, {"friends": friendsPairs}, function(){})
+
+}
+
+function _getBestFriends() {
     // // Getting number of photos we are both tagged on
     // FB.api(
     //   '/me/friends',
@@ -45,14 +58,10 @@ function getBestFriends() {
         collectMyPostsData(response, collectedMyPostsData, function(d) {console.log(d);});
       }
     );
-
-
-
 }
 
-
 function collectFriendsPhotosData(resp, data, callback) {
-    console.log('GOT:', resp);
+    // console.log('GOT:', resp);
     data.push.apply(data, resp.data);
     next = resp.paging.next;
     if (next) {
@@ -60,13 +69,13 @@ function collectFriendsPhotosData(resp, data, callback) {
             collectFriendsPhotosData(r, data, callback);
         });
     } else {
-		printData(data);
+		// printData(data);
         getTagsFromAllMyPhotos(data);
     }
 }
 
 function collectMyPostsData(resp, data, callback) {
-	log('entering collectMyPostsData');
+	// log('entering collectMyPostsData');
 	console.log('GOT:', resp);
     data.push.apply(data, resp.data);
     if (resp.paging) {
@@ -76,7 +85,7 @@ function collectMyPostsData(resp, data, callback) {
 	            collectMyPostsData(r, data, callback);
 	        });
 	    } else {
-			printData(data);
+			// printData(data);
 	        getNumberOfMyPostsWithFriends(data);
 	    }
 	}
@@ -110,7 +119,6 @@ function getTagsFromAllMyPhotos (data) {
 	}
 
 }
-
 
 function getNumberOfCommonPhotos (data) {
 	log('getNumberOfCommonPhotos data:' + data)
@@ -187,10 +195,9 @@ function getNumberOfMyFriendsPostsWithMe() {
 
 // Kind of incremental map
 function addOneToFriendsMap(friend_id) {
-	if (myFriends.get(friend_id) > 0) {
-		myFriends.set(friend_id, myFriends.get(friend_id) + 1);
-	} else {
-		myFriends.set(friend_id, 1);
-	}
+	if (myFriends[friend_id]) 
+		myFriends[friend_id] += 1; 
+	else 
+		myFriends[friend_id] = 1
 }
 	
