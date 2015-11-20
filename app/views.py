@@ -24,11 +24,19 @@ def error():
 import requests
 import json
 
-DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
+DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
-
-@app.route('/es_put', methods=['POST'])
-def put_events():
-    print 'put', request
-    #r = requests.put(DB+'/'+data['table']+'/'+data['id'], data=json.dumps(data['doc']))
-    return 'request'
+@app.route('/db', methods=['POST'])
+def db():
+    data = request.get_data()
+    db_req = json.loads(data)
+    link = DB_PATH+'/'+db_req['index']
+    if db_req['method'] == 'GET':
+        r = requests.get(link)
+        return r.text
+    elif db_req['method'] == 'POST':
+        r = requests.post(link, data=db_req['query'])
+        return r.text
+    elif db_req['method'] == 'PUT':
+        r = requests.put(link, data=db_req['query'])
+        return r.text
