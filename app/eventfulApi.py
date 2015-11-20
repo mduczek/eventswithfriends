@@ -36,7 +36,7 @@ def getEventsFromUrl(url, user_id):
         eventslist.append(Event(ident=ident, title=title, url=url,
             description=description, user_id=user_id, address=venue_address,
             datetime=start_time, suggested_friends="", friend_id='',
-             is_fb_event=False, priority=10, image=image))
+             is_fb_event=False, priority=0, image=image))
     return eventslist
 
 

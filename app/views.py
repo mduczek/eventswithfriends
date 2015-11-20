@@ -175,7 +175,7 @@ def sorted2(user):
                         score += 1
             if score >= 1:
                 best_friends.add(interests_user_id)
-        source['suggested_friends'] = json.dumps(list(best_friends))
+        source['suggested_friends'] = list(best_friends)
         events.append(Event(**source))
     return events
 

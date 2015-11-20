@@ -157,6 +157,7 @@ div.delete {
     border: 1px solid #e0e0e0;
     background-size: 100%;
     cursor: pointer;
+    display: inline-block;
 }
 
 .friend_picture.attending:before {

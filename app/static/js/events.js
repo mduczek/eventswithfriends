@@ -10,6 +10,18 @@ var promises2 = [];
 function hasClass( target, className ) {
         return new RegExp('(\\s|^)' + className + '(\\s|$)').test(target.className);
 }
+function getPicture(user, callback) {
+    log(user);
+    FB.api(
+            '/'+user+'/picture',
+            'GET',
+            {},
+            function(response) {
+                log("kdjflksjflsfj");
+                callback(response.data.url);
+            }
+          );   
+}
 $(function() {
     $(".description").click(function() {
         $(this).toggleClass("open");
@@ -37,16 +49,12 @@ $(function() {
     });
 
     $(".friend_picture").each(function() {
-        var url = $(this).attr("data-profile");
-        $(this).css("background-image", "url("+url+")");
-        var going = $(this).attr("data-going"); 
-        if (going !== "0") {
-            $(this).addClass("attending");
-        }
-        $(this).click(function() {
-            if (!hasClass($(this), "attending")) {
+        log("dskjhfkjdhsfhjds");
+        getPicture($(this).attr("data-friend_id"), function (url) {
+            $(this).css("background-image", "url("+url+")");
+            $(this).click(function() {
                 $(this).toggleClass("checked");
-            }
+            });
         });
     });
 });

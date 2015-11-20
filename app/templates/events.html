@@ -34,11 +34,16 @@
                     <!-- TODO suggested friends i przycisk z zaproszeniem -->
                 </div>
 
+                {% if event.suggested_friends|length > 0 %}
                 <div class="text-center col-sm-12">
-                    <div class="friend_picture" data-friend_id="100001711710125" data-going="0" data-profile="https://fbcdn-sphotos-e-a.akamaihd.net/hphotos-ak-xtf1/v/t1.0-9/11403395_989786231061865_2000113524457003408_n.jpg?oh=43679f26a5e947f3b3163a6b00e49b2e&oe=56EE5A89&__gda__=1458516178_1d88739db259f7b397459943372d02f1">
+                    <h5>Ask them out, they also like it!</h5>
+                    {% for friend in event.suggested_friends %}
+                    <div class="friend_picture" data-friend_id="{{ friend }}">
                         &nbsp;
                     </div>
+                    {% endfor %}
                 </div>
+                {% endif %}
 
                 <div class="text-center" style="position: absolute; bottom: 0px; left: 0px;width: 100%;">
                     <button data-href="{{ event.url }}" class="invitation btn btn-large btn-primary col-sm-12 col-sm-offset-3">Invite</button>
