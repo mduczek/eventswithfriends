@@ -1,5 +1,5 @@
 from app import app
-from xmlToJson import xmlToJson
+from app.xmlToJson import xmlToJson
 from flask import make_response
 #import ConfigParser
 
@@ -23,43 +23,59 @@ Supported filters:
     category - limits to categories returned by getCategories()
     others: check http://api.eventful.com/docs/events/search
 """
-#@app.route("/eventfulApi/filterEvents", methods=["GET"])
-#def filterEvents(filterDictionary):
-    #searchString = ""
-    #for (key, value) in filterDictionary.items():
-        #searchString += "&" + key + "=" + value
-    #url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
-    #return xmlToJson(url)
+@app.route("/eventful_api/filter_events", methods=["GET"])
+def filterEvents(filterDictionary):
+    searchString = ""
+    for (key, value) in filterDictionary.items():
+        searchString += "&" + key + "=" + value
+    url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
+    print url
+    result = xmlToJson(url)
+    print result
+    resp = Response(result, status=200, mimetype="application/json")
+    return resp
 
 
 """ Returns the list of all categories """
-@app.route("/eventfulApi/getCategories", methods=["GET", "POST"])
+@app.route("/eventful_api/get_categories", methods=["GET", "POST"])
 def getCategories():
     url = DOMAIN + "/categories/list?app_key=" + API_KEY
-    return make_response(xmlToJson(url), 200)
+    print url
+    result = xmlToJson(url)
+    print result
+    resp = Response(result, status=200, mimetype="application/json")
+    return resp
 
 
 """ Filters all performers, either keywords parameter or category is required """
-#@app.route("/eventfulApi/filterPerformers/<string:keywords>", methods=["GET"])
-#@app.route("/eventfulApi/filterPerformers/<string:category>", methods=["GET"])
-#@app.route("/eventfulApi/filterPerformers/<string:keywords>/<string:category>", methods=["GET"])
-#def filterPerformers(keywords=None, category=None):
-    #searchString = ""
-    #if (keywords != None):
-        #searchString += "&keywords="+keywords
-    #if (category != None):
-        #searchString += "&category="+category
-    #url = DOMAIN + "/performers/search?app_key=" + API_KEY + searchString
-    #return xmlToJson(url)
+@app.route("/eventful_api/filter_performers/<keywords>", methods=["GET"])
+@app.route("/eventful_api/filter_performers/<category>", methods=["GET"])
+@app.route("/eventful_api/filter_performers/<keywords>/<category>", methods=["GET"])
+def filterPerformers(keywords=None, category=None):
+    searchString = ""
+    if (keywords != None):
+        searchString += "&keywords="+keywords
+    if (category != None):
+        searchString += "&category="+category
+    url = DOMAIN + "/performers/search?app_key=" + API_KEY + searchString
+    print url
+    result = xmlToJson(url)
+    print result
+    resp = Response(result, status=200, mimetype="application/json")
+    return resp
 
 
 """
 Returns the list of events for particular performer
 Id might be obtained by calling filterPerformers first
 """
-#@app.route("/eventfulApi/performerEvents/<string:performerId>", methods=["GET"])
-#def performerEvents(performerId):
-    #searchString = "&id=" + performerId
-    #url = DOMAIN + "/performers/events/list?app_key=" + API_KEY + searchString
-    #return xmlToJson(url)
+@app.route("/eventful_api/performer_events/<performerId>", methods=["GET"])
+def performerEvents(performerId):
+    searchString = "&id=" + performerId
+    url = DOMAIN + "/performers/events/list?app_key=" + API_KEY + searchString
+    print url
+    result = xmlToJson(url)
+    print result
+    resp = Response(result, status=200, mimetype="application/json")
+    return resp
 
