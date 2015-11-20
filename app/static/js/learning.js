@@ -8,7 +8,7 @@ function getLocation(callback) {
 
 function learning_main() {
     $("body").addClass("loading");
-    getBestFriends();
+    //getBestFriends();
     log("learning script on");
     getLocation(filterEvents);
     getPreferences(function() {
