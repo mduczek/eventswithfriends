@@ -8,15 +8,6 @@ var PAGES = [
         , login_requires: true
         , main_function: learning_main
     }
-    , {
-        addresses: ["/contact"]
-        , login_required: false
-    }
-    , {
-        addresses: ["/settings"]
-        , login_required: true
-        , main_function: settings_main
-    }
 ];
 
 var CURRENT_PAGE = {};
