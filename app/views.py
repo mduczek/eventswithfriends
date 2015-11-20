@@ -28,11 +28,10 @@ DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com
 
 
 @app.route('/es_put', methods=['POST'])
-def put_events(user):
-    data = json.loads(request.data)
-    print 'put', data
-    r = requests.put(DB+'/'+data['table']+'/'+data['id'], data=json.dumps(data['doc']))
-    return r
+def put_events():
+    print 'put', request.data
+    #r = requests.put(DB+'/'+data['table']+'/'+data['id'], data=json.dumps(data['doc']))
+    return request
 # ========
 
 from app.xmlToJson import xmlToJson
