@@ -50,5 +50,6 @@ DOMAIN="http://api.eventful.com/rest"
 
 @app.route('/eventful_api/get_categories', methods=["GET", "POST"])
 def getCategories():
-    url = DOMAIN + "/categories/list?app_key=" + API_KEY
-    return make_response(xmlToJson(url), 200)
+    return render_template("error.html")
+    #url = DOMAIN + "/categories/list?app_key=" + API_KEY
+    #return make_response(xmlToJson(url), 200)
