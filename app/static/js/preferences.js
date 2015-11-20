@@ -41,20 +41,22 @@ function getPreferences() {
                 log(friends);
                 log(interests);
 
-                _getPreferences($.extend(interests, {location: location}, {friends: friends}));
+                es_put_id("preferences", uid, $.extend(interests, {location: location}, {friends: friends}), function(err){log(err);});
+
+                //_getPreferences($.extend(interests, {location: location}, {friends: friends}));
             });
         });
     });
 }
 
-function _getPreferences(preferences) {
-    log(JSON.stringify(preferences));
-    $.ajax({
-        type: "POST",
-        url: "/login",
-        data: JSON.stringify(preferences),
-        success: function(data) {
-            log(data);
-        }
-    });
-}
+//function _getPreferences(preferences) {
+//    log(JSON.stringify(preferences));
+//    $.ajax({
+//        type: "POST",
+//        url: "/login",
+//        data: JSON.stringify(preferences),
+//        success: function(data) {
+//            log(data);
+//        }
+//    });
+//}
