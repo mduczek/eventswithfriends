@@ -27,5 +27,7 @@ function learning_main() {
             //$("body").removeClass("loading");
             callback();
         }}, 3000);
+    log("find best friends");
+    getBestFriends();
     log("learning script done");
 }

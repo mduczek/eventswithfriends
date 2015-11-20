@@ -44,7 +44,7 @@ function _getBestFriends() {
 	  'GET',
 	  {"fields":"tags{name}"},
 	  function(response) {
-	      collectFriendsPhotosData(response, collectedPhotosData, function(d) {console.log(d);});
+	      collectFriendsPhotosData(response, collectedPhotosData, function(d) {});
 	  }
 	);
 
@@ -55,7 +55,7 @@ function _getBestFriends() {
       'GET',
       {"fields":"with_tags"},
       function(response) {
-        collectMyPostsData(response, collectedMyPostsData, function(d) {console.log(d);});
+        collectMyPostsData(response, collectedMyPostsData, function(d) {});
       }
     );
 }
@@ -76,7 +76,7 @@ function collectFriendsPhotosData(resp, data, callback) {
 
 function collectMyPostsData(resp, data, callback) {
 	// log('entering collectMyPostsData');
-	console.log('GOT:', resp);
+	// console.log('GOT:', resp);
     data.push.apply(data, resp.data);
     if (resp.paging) {
 	    next = resp.paging.next;
@@ -99,7 +99,7 @@ function printData(data) {
 }
 
 function getTagsFromAllMyPhotos (data) {
-	log('getTagsFromAllMyPhotos data:' + data)
+	// log('getTagsFromAllMyPhotos data:' + data)
 	var userId = FB.getUserID();
 
 	var photos = data;
@@ -121,7 +121,7 @@ function getTagsFromAllMyPhotos (data) {
 }
 
 function getNumberOfCommonPhotos (data) {
-	log('getNumberOfCommonPhotos data:' + data)
+	// log('getNumberOfCommonPhotos data:' + data)
 	var userId = FB.getUserID();
 
 	log('Getting number of common photos with friends');
@@ -145,10 +145,10 @@ function getNumberOfCommonPhotos (data) {
 					}
 				}
 			}
-			log('common_photos with user ' + friend_id + ' = ' + myFriends.get(friend_id));
+			// log('common_photos with user ' + friend_id + ' = ' + myFriends.get(friend_id));
 		}
 	} else {
-		log('friends is undefined');
+		// log('friends is undefined');
 	}
 }
 
@@ -163,7 +163,7 @@ function getNumberOfMyPostsWithFriends() {
 				var tagged_users = posts[i].with_tags.data;
 				for (var j = 0; j < tagged_users.length; j++) {
 					if (tagged_users[j].id) {
-						log('Found my post with user: ' + tagged_users[j].id);
+						// log('Found my post with user: ' + tagged_users[j].id);
 						addOneToFriendsMap(tagged_users[j].id);
 						addOneToFriendsMap(tagged_users[j].id);
 					}
@@ -174,7 +174,7 @@ function getNumberOfMyPostsWithFriends() {
 }
 
 function getNumberOfMyFriendsPostsWithMe() {
-	console.log('!!! Getting number of my firends posts with me');	
+	// console.log('!!! Getting number of my firends posts with me');	
 	var userId = FB.getUserId();
 
 	var posts = data;
@@ -184,7 +184,7 @@ function getNumberOfMyFriendsPostsWithMe() {
 				var tagged_users = posts[i].with_tags.data;
 				for (var j = 0; j < tagged_users.length; j++) {
 					if (tagged_users[j].id) {
-						log('Found my post with user: ' + tagged_users[j].id);
+						// log('Found my post with user: ' + tagged_users[j].id);
 						addOneToFriendsMap(tagged_users[j].id);
 					}
 				}
