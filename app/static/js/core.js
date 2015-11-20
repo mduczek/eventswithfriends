@@ -4,7 +4,7 @@ var PAGES = [
         , login_required: false
     }
     , {
-        addresses: ["/login"]\
+        addresses: ["/login"]
         , login_requires: true
         , main_function: learning_main
     }
