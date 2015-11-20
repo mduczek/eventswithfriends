@@ -3,11 +3,12 @@
 from event import *
 from stopwords import *
 # from views import db
+import string
 
 def dealWithRejectedEvent(uid, json_event):
 	event = deserializeEvent(json_event)
 	# eventKeywords = set()
-	title = [word.strip(string.punctuation).lower() for word in event.desciption.split()]
+	title = [word.strip(string.punctuation).lower() for word in event.description.split()]
 	descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
 	setOfRejectedWords = set(title) | (set(descr))
 	setOfRejectedWords = setOfRejectedWords - GLOBAL_SET_OF_STOPWORDS

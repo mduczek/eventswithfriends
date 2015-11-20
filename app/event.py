@@ -3,7 +3,7 @@ import json
 
 class Event(object):
 
-    def __init__(self, ident, title, url, description, user_id, is_fb_event, address, datetime, priority, image):
+    def __init__(self, ident, title, url, description, user_id, is_fb_event, address, datetime, priority, image, suggested_friends = ""):
         self.ident = ident
         self.title = title
         self.url = url
@@ -12,9 +12,9 @@ class Event(object):
         self.is_fb_event = is_fb_event
         self.address = address
         self.datetime = datetime
-        self.suggested_friends = ""
         self.priority = priority
         self.image = image
+        self.suggested_friends = suggested_friends
 
     def set_suggested_friends(self, friends_list):
         self.suggested_friends = friends_list
