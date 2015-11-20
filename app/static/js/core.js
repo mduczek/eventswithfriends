@@ -4,6 +4,11 @@ var PAGES = [
         , login_required: false
     }
     , {
+        addresses: ["/login"]\
+        , login_requires: true
+        , main_function: learning_main
+    }
+    , {
         addresses: ["/contact"]
         , login_required: false
     }
