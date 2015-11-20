@@ -14,6 +14,20 @@ function learning_main() {
     log("learning script on");
     getLocation(filterEvents);
     putUserFriendsEvents();
+    getPreferences(function() {
+        $.ajax({
+            url: '/apiMilosza/' + FB.getUserID(),
+            method: "GET",
+            success: function(data) {
+                log(data);
+                callback(data);
+            },
+            error: function(error) {
+                log(error.responseText);
+            }
+        })
+    });
+
     log(promises);
     var tmpsize = promises.length;
     log(tmpsize);
