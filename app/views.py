@@ -31,4 +31,4 @@ DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com
 def put_events():
     print 'put', request.data
     #r = requests.put(DB+'/'+data['table']+'/'+data['id'], data=json.dumps(data['doc']))
-    return request
+    return 'request'
