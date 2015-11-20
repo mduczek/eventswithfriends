@@ -62,13 +62,6 @@ def sorted(user):
             "term": {
               "user_id": user
             }
-          },
-          "filter": {
-            "range": {
-              "datetime": {
-                "gte": "now-1d/d"
-              }
-            }
           }
         }
       },
@@ -103,8 +96,8 @@ def login():
 @app.route('/events/<user_id>', methods=['GET', 'POST'])
 def events(user_id):
     eventslist = sorted(user_id)
+    print eventslist
     return render_template('events.html', events = eventslist)
-
 
 @app.route('/error', methods=['GET', 'POST'])
 def error():

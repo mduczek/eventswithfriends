@@ -33,7 +33,7 @@ def getEventsFromUrl(url, user_id):
         start_time = getTagValue(event, "start_time").replace(' ', 'T') # hotfix dla elastic searcha
         ident = event.attributes['id'].value
 
-        eventslist.append(Event(ident, title, url, description, user_id, False, venue_address, start_time, 10, image))
+        eventslist.append(Event(ident, title, url, description, user_id, venue_address, start_time, "", '', False, 10, image))
     return eventslist
 
 
