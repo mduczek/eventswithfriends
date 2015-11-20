@@ -18,28 +18,42 @@ def dealWithRejectedEvent(uid, json_event):
     descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
     setOfRejectedWords = set(title) | (set(descr))
     setOfRejectedWords = setOfRejectedWords - GLOBAL_SET_OF_STOPWORDS
-
-	r = requests.get(DB_PATH+'/blacklist/'+uid)
+    uid = "1029457540454627"
+    r = requests.get(DB_PATH+'/blacklist/'+uid)
     words = json.loads(r.text)['_source']
     savedRejectedWords = words['rejected']
+    savedBlaclistedWords = words['blacklist']
+
+    print 'savedRejectedWords'
+    print savedRejectedWords
+
+    print 'savedBlaclistedWords'
+    print savedBlaclistedWords
 
     for newWord in setOfRejectedWords:
-    	if newWord in savedRejectedWords:
-    		savedRejectedWords[newWord] += 1
-		else:
-    		savedRejectedWords[newWord] = 1
-    
-    # Saving to database rejected words
-    data = json.dumps(setOfRejectedWords)
-	r = requests.put(DB_PATH+'/blacklist/'+uid, savedRejectedWords)
-    print r.text
+        if newWord in savedRejectedWords:
+            savedRejectedWords[newWord] += 1
+        else:
+            savedRejectedWords[newWord] = 1
 
     # Sprawdzanie czy tych rejected jest wiezej niz 5, jesli tak, to wrzucenie ich do blacklist
-    for rejectedWord in setOfRejectedWords:
-        n = 0
-        # wyciagnac liczbe wystapien dla tego usera
-        # jak 5 to dodanie do blacklist
+    for word, number in savedRejectedWords.iteritems():
+    	if number >= 5:
+    		if word not in savedBlaclistedWords:
+    			savedBlaclistedWords.append(word)
 
+
+    # Saving to database rejected words
+    setToDump = {"rejected":savedRejectedWords,"blacklist":savedBlaclistedWords}
+    print "setToDump to save"
+    print setToDump
+    
+    data = json.dumps(setToDump)
+    print "data to save"
+    print data
+    r = requests.put(DB_PATH+'/blacklist/'+uid, data)
+    print "Soooooo..."
+    print r.text	
 
 
 
@@ -82,5 +96,5 @@ def getBlacklistedWords(uid):
 e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
 
 # test
-dealWithRejectedEvent(1, e.serializeEvent())
-print eventShouldBeBlackListed(1, e.serializeEvent())
+dealWithRejectedEvent("1", e.serializeEvent())
+print eventShouldBeBlackListed("1", e.serializeEvent())

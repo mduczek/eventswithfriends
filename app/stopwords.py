@@ -3,5 +3,3 @@ def createStopwordsSet():
 	return set(listOfStopwords)
 
 GLOBAL_SET_OF_STOPWORDS = createStopwordsSet()
-
-print GLOBAL_SET_OF_STOPWORDS
