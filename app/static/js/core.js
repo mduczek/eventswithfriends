@@ -49,7 +49,6 @@ $(document).ready(function () {
     if (CURRENT_PAGE.login_required === true) {
         FBloginRequired();
     }
-    main();
 });
 
 function exit() {
