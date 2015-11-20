@@ -1,7 +1,7 @@
 var PAGES = [
     {
         addresses: ["/index", "/"]
-        , login_required: true
+        , login_required: false
     }
     , {
         addresses: ["/contact"]
