@@ -1,6 +1,7 @@
 from app import app
 from app.xmlToJson import xmlToJson
 from flask import make_response, Response
+import json
 #import ConfigParser
 
 #config = ConfigParser.RawConfigParser()
@@ -23,10 +24,13 @@ Supported filters:
     category - limits to categories returned by getCategories()
     others: check http://api.eventful.com/docs/events/search
 """
-@app.route("/eventful_api/filter_events", methods=["GET"])
+@app.route("/eventful_api/filter_events/<filterDictionary>", methods=["GET"])
 def filterEvents(filterDictionary):
     searchString = ""
-    for (key, value) in filterDictionary.items():
+    print filterDictionary
+    dictionary = json.loads(filterDictionary)
+    print dictionary
+    for (key, value) in dictionary.items():
         searchString += "&" + key + "=" + value
     url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
     print url
@@ -37,7 +41,7 @@ def filterEvents(filterDictionary):
 
 
 """ Returns the list of all categories """
-@app.route("/eventful_api/get_categories", methods=["GET", "POST"])
+@app.route("/eventful_api/get_categories", methods=["GET"])
 def getCategories():
     url = DOMAIN + "/categories/list?app_key=" + API_KEY
     print url
