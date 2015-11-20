@@ -2,9 +2,13 @@ function callback() {
     redirect("/events");
 }
 
+function getLocation(callback) {
+    FB.api("/me?fields=location", callback);
+}
+
 function learning_main() {
     log("learning script on");
-    getPreferences(callback);
+    getLocation(filterEvents);
 
     log("learning script done");
 }
