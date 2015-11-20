@@ -4,7 +4,7 @@ function FBinit(app_id) {
         appId: app_id,
         frictionlessRequests: true,
         status: true,
-        version: 'v2.3  '
+        version: 'v2.5'
     });
 }
 
@@ -22,7 +22,6 @@ function FBloginRequired() {
 function login(callback) {
     console.log("login");
     FB.login(callback, {scope: 'email,user_friends,user_likes,user_events,user_location,user_photos'} );
-    FB.api('/921551421245240/notifications?access_token=CAAFHFuDelzsBAMJZC1beFFUJOrHybrZAKgCLXSZCB2RFW3hrADZCK7JhTqZASxZAvfrqJhq7dOzZCQ8vJh3DlFZC9et9KAD0NBg5ClQorxJOCqkIvFjelEwBG7YpsyWVR5dz6PkU2Rp99SZC3ljJVdQGAHR1D0gmw31fAZCxTIBeEkvcrDreDDlxjCROGZAbbqq4wK0YyVXnbEYos9J1DFGVu5n"&href=http://localhost:5000&template=Costam', 'POST', function(response) { console.log(response); })
 }
 
 // callback do logowania

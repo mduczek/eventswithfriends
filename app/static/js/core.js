@@ -1,16 +1,21 @@
 var PAGES = [
     {
         addresses: ["/index", "/"]
-        , login_required: true
-    }
-    , {
-        addresses: ["/contact"]
         , login_required: false
     }
     , {
-        addresses: ["/settings"]
+        addresses: ["/login"]
         , login_required: true
-        , main_function: settings_main
+        , main_function: learning_main
+    }
+    , {
+        addresses: ["/events"]
+        , login_required: true
+        , main_function: events_main
+    }
+    , {
+        addresses: ["/error"]
+        , login_required: false
     }
 ];
 
@@ -57,6 +62,7 @@ $(document).ready(function () {
 
 function exit() {
     log("exit called");
+    redirect("/error");
     //top.location.href = 'https://www.facebook.com/appcenter/' + APP_NAMESPACE;
 }
 
