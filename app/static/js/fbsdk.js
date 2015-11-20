@@ -22,7 +22,7 @@ function FBloginRequired() {
 // obsluga logowania
 function login(callback) {
     console.log("login");
-    FB.login(callback, {scope: 'email,user_friends,user_likes,user_events,user_location,user_photos'} );
+    FB.login(callback, {scope: 'email,user_friends,user_likes,user_events,user_location,user_photos,publish_actions'} );
 }
 
 // callback do logowania
