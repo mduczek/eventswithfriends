@@ -33,7 +33,7 @@ def getEventsFromUrl(url, user_id):
         start_time = getTagValue(event, "start_time").replace(' ', 'T') # hotfix dla elastic searcha
         ident = event.attributes['id'].value
 
-        eventslist.append(Event(ident, title, url, description, user_id, False, venue_address, start_time, 10, image))
+        eventslist.append(Event(ident, title, url, description, user_id, venue_address, start_time, "", '', False, 10, image))
     return eventslist
 
 
@@ -60,10 +60,9 @@ def filterEvents(user_id, filterDictionary):
     eventslist = getEventsFromUrl(url, user_id)
 
     put_events(eventslist)
-    # todo call do bazy
 
-    resp = Response("", status=200, mimetype="application/xml")
-    return resp
+    response = make_response("")
+    return response
 
 """ Filters all performers, either keywords parameter or category is required """
 @app.route("/eventful_api/filter_performers/keywords/<keywords>", methods=["GET"])
@@ -91,7 +90,6 @@ def performerEvents(user_id, performerId):
     print url
     eventslist = getEventsFromUrl(url, user_id)
     put_events(eventslist)
-    # todo call do bazy
-    resp = Response("", status=200, mimetype="application/json")
-    return resp
+    response = make_response("")
+    return response
 
