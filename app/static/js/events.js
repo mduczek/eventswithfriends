@@ -48,7 +48,9 @@ function setCurrentUser() {
     );
 }
 
-function getUserEvents() {
+function empty(r) {}
+
+function putUserEvents() {
     FB.api(
       '/me/events',
       'GET',
@@ -56,20 +58,35 @@ function getUserEvents() {
       function(response) {
         var events = [];
         pageAll(response, events, function(events) {
-            events_all = {my: events, of_friends: []}
-            $.ajax({
-                url: 'put_events',
-                type: 'POST',
-                data: events_all,
-                success: function(data) {
-                    console.log(data);
-                },
-                error: function(error) {
-                    console.log(error.responseText);
-                }
-            });
+            for (var i=0; i<events.length; i++) {
+                events[i]['user'] = user_id;
+                es_put_id('events', user_id + '_' + events[i].id, events[i], empty);
+            }
         });
       }
+    );
+}
+
+
+function putUserFriendsEvents() {
+    FB.api(
+        '/me/friends',
+        'GET',
+        {"fields":"id,events"},
+        function(response) {
+            data = response.data;
+            for (var i=0; i<data.length; i++) {
+                var events = data[i].events.data;
+                var friend = data[i].id;
+                for (var j=0; j<events.length; j++) {
+                    var ev = events[j];
+                    ev['friend_of_user'] = user_id;
+                    ev['friend_id'] = friend;
+                    es_put_id('events', user_id + '_' + friend + '_' + ev.id, ev, empty);
+                    //console.log('events', user_id + '_' + friend + '_' + ev.id, ev);
+                }
+            }
+        }
     );
 }
 
