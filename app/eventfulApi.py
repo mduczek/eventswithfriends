@@ -60,10 +60,9 @@ def filterEvents(user_id, filterDictionary):
     eventslist = getEventsFromUrl(url, user_id)
 
     put_events(eventslist)
-    # todo call do bazy
 
-    resp = Response("", status=200, mimetype="application/xml")
-    return resp
+    response = make_response("")
+    return response
 
 """ Filters all performers, either keywords parameter or category is required """
 @app.route("/eventful_api/filter_performers/keywords/<keywords>", methods=["GET"])
@@ -91,7 +90,6 @@ def performerEvents(user_id, performerId):
     print url
     eventslist = getEventsFromUrl(url, user_id)
     put_events(eventslist)
-    # todo call do bazy
-    resp = Response("", status=200, mimetype="application/json")
-    return resp
+    response = make_response("")
+    return response
 
