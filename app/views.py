@@ -3,25 +3,6 @@ from flask import render_template, request, make_response, jsonify, session
 from app import app
 import string
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
-def index():
-    return render_template('index.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    return render_template('login.html')
-
-@app.route('/events/<user_id>', methods=['GET', 'POST'])
-def events(user_id):
-    eventslist = getSortedEvents(user_id)
-    return render_template('events.html', events = eventslist)
-
-
-@app.route('/error', methods=['GET', 'POST'])
-def error():
-    return render_template('error.html')
-
 #md ========
 import requests
 import json
@@ -72,16 +53,15 @@ def db():
 
 from event import Event
 
-@app.route('/sorted', methods=['GET'])
-def sorted():
-    user = "1029457540454627"
+#@app.route('/sorted/<user>', methods=['GET'])
+def sorted(user):
     Q = {
-    "query" : { "term" : { "user_id" : user } }, 
+    "query" : { "term" : { "user_id" : user } },
     "sort": [{ "priority": { "order": "desc" } } ],
     "size": 20
     }
     r = requests.get(DB_PATH+'/events/_search', data=json.dumps(Q))
-    hits = json.loads(r.text) 
+    hits = json.loads(r.text)
     events = []
     for res in hits['hits']['hits']:
         source = res['_source']
@@ -92,3 +72,22 @@ def sorted():
 
 
 
+
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return render_template('login.html')
+
+@app.route('/events/<user_id>', methods=['GET', 'POST'])
+def events(user_id):
+    eventslist = sorted(user_id)
+    return render_template('events.html', events = eventslist)
+
+
+@app.route('/error', methods=['GET', 'POST'])
+def error():
+    return render_template('error.html')

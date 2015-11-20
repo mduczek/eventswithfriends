@@ -121,9 +121,13 @@ body.loading .loading-modal {
 .event {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .event_picture {
     margin-bottom: 25px;
     width: 100%;
 }
-
+.fb_picture {
+    width: 15px;
+}
