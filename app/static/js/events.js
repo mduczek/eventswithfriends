@@ -3,7 +3,46 @@ var eventful_events_interests_city = [];
 var eventful_events_interests_country = [];
 var interests = [];
 var city, country;
-var x;
+
+var NOTHING = "Unfortunately, there is no suggested event in this category...";
+var promises = [];
+
+function draw_empty(div) {
+    var d = $("<div/>").addClass("bg-danger").text(NOTHING);
+    log(d);
+    log($(div));
+    $(div).find(".events").append(d);
+}
+
+function draw_locations() {
+    if (eventful_events_locations.length > 0) {
+
+    } else {
+        draw_empty('.events_in_location');
+    }
+}
+
+function draw_music_city() {
+    if (eventful_events_interests_city.length > 0) {
+
+    } else {
+        draw_empty('.favorite_musician_city');
+    }
+}
+function draw_music_country() {
+    if (eventful_events_interests_country.length > 0) {
+
+    } else {
+        draw_empty('.favorite_musician_country');
+    }
+}
+
+
+function draw() {
+    draw_locations();
+    draw_music_city();
+    draw_music_country();
+}
 
 function fetch_interests(json) {
     if (json._source.interests.music) {
@@ -20,7 +59,7 @@ function fetch_interests(json) {
     }
 }
 
-function filter_location(json, callback) {
+function filter_location(json) {
     var obj = new Object();
     fetch_interests(json);
     if (json._source.location) {
@@ -28,47 +67,51 @@ function filter_location(json, callback) {
         city = tmp[0];
         country = tmp[1];
         obj.location = json._source.location;
-        filterEvents(obj, function (d) {
-            if (d[1].search.events.event) {
-                var events = d[1].search.events.event;
-                for (var e in events) {
-                    for (var i in interests) {
-                        if (events[e].description && events[e].description["#text"] && events[e].description["#text"].data.indexOf(interests[i]) > -1 || 
-                            events[e].title && events[e].title["#text"] && events[e].title["#text"].data.indexOf(interests[i]) > -1) {
-                            eventful_events_locations.push(events[e]);
-                            break;
+        promises.push(
+                filterEvents(obj, function (d) {
+                    if (d[1].search.events.event) {
+                        var events = d[1].search.events.event;
+                        for (var e in events) {
+                            for (var i in interests) {
+                                if (events[e].description && events[e].description["#text"] && events[e].description["#text"].data.indexOf(interests[i]) > -1 || 
+                                        events[e].title && events[e].title["#text"] && events[e].title["#text"].data.indexOf(interests[i]) > -1) {
+                                    eventful_events_locations.push(events[e]);
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (callback)
-                    callback(json);
-            }
-        });
+                })
+                );
     }
 }
 
 function filter_musicalEvents(json) {
+    log("callback called!");
     var musicians = json._source.interests.music;
     if (musicians) {
         for (var perf in musicians) {
-            filterPerformers("", musicians[perf], function (d) {
-                if (d[1].search.performers.performer && d[1].search.performers.performer.id) {
-                    var id = d[1].search.performers.performer.id["#text"].data;
-                    performerEvents(id, function (dd) {
-                        if (dd[1].events.event) {
-                            var events = dd[1].events.event;
-                            for (var e in events) {
-                                if (events[e].city && events[e].city["#text"].data === city) {
-                                    eventful_events_interests_city.push(events[e]);
+            promises.push(
+                    filterPerformers("", musicians[perf], function (d) {
+                        if (d[1].search.performers.performer && d[1].search.performers.performer.id) {
+                            var id = d[1].search.performers.performer.id["#text"].data;
+                            promises.push(performerEvents(id, function (dd) {
+                                if (dd[1].events.event) {
+                                    var events = dd[1].events.event;
+                                    for (var e in events) {
+                                        if (events[e].city && events[e].city["#text"].data === city) {
+                                            eventful_events_interests_city.push(events[e]);
+                                        }
+                                        if (events[e].country && events[e].country["#text"].data === country) {
+                                            eventful_events_interests_country.push(events[e]);
+                                        }
+                                    }
                                 }
-                                if (events[e].country && events[e].country["#text"].data === country) {
-                                    eventful_events_interests_country.push(events[e]);
-                                }
-                            }
+                            })
+                                    );
                         }
-                    });
-                }
-            });
+                    })
+                    )
         }
     }
 }
@@ -77,7 +120,11 @@ function events_main() {
 
     es_get_id("preferences", FB.getUserID(), function(json_data) {
         json = JSON.parse(json_data);
-        filter_location(json, filter_musicalEvents );
+        filter_location(json);
+        filter_musicalEvents(json);
+        $.when.apply($, promises).then(function() {
+            draw();
+        });
     });
 }
 
