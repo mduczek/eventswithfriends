@@ -56,10 +56,31 @@ from event import Event
 #@app.route('/sorted/<user>', methods=['GET'])
 def sorted(user):
     Q = {
-    "query" : { "term" : { "user_id" : user } },
-    "sort": [{ "priority": { "order": "desc" } } ],
-    "size": 20
-    }
+      "query": {
+        "filtered": {
+          "query": {
+            "term": {
+              "user_id": user
+            }
+          },
+          "filter": {
+            "range": {
+              "datetime": {
+                "gte": "now-1d/d"
+              }
+            }
+          }
+        }
+      },
+      "sort": [
+        {
+          "priority": {
+            "order": "desc"
+          }
+        }
+      ],
+      "size": 20
+      }
     r = requests.get(DB_PATH+'/events/_search', data=json.dumps(Q))
     hits = json.loads(r.text)
     events = []
@@ -68,9 +89,6 @@ def sorted(user):
         print source.keys()
         events.append(Event(**source))
     return events
-
-
-
 
 
 @app.route('/', methods=['GET', 'POST'])
