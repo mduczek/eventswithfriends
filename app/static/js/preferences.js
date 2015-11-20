@@ -1,4 +1,4 @@
-function getPreferences() {
+function getPreferences(callback) {
     log("getPreferences");
 
     var uid = FB.getUserID();
@@ -41,22 +41,9 @@ function getPreferences() {
                 log(friends);
                 log(interests);
 
-                es_put_id("preferences", uid, $.extend(interests, {location: location}, {friends: friends}), function(err){log(err);});
+                es_put_id("preferences", uid, $.extend(interests, {location: location}, {friends: friends}), callback);
 
-                //_getPreferences($.extend(interests, {location: location}, {friends: friends}));
             });
         });
     });
 }
-
-//function _getPreferences(preferences) {
-//    log(JSON.stringify(preferences));
-//    $.ajax({
-//        type: "POST",
-//        url: "/login",
-//        data: JSON.stringify(preferences),
-//        success: function(data) {
-//            log(data);
-//        }
-//    });
-//}
