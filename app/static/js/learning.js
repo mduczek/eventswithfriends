@@ -1,3 +1,3 @@
 function learning_main() {
-    console.log("learning script on");
+    log("learning script on");
 }
