@@ -347,7 +347,7 @@ function create_events(events) {
 
 function putUserFriendsEvents() {
     var user_id = FB.getUserID();
-    FB.api(
+    promises.push(FB.api(
         '/me/friends',
         'GET',
         {"fields":"id,events{cover,start_time,description,place,name}"},
@@ -386,11 +386,11 @@ function putUserFriendsEvents() {
 
                     eve['user_id'] = user_id;
                     eve['friend_id'] = friend;
-                    es_put_id('events', user_id + '_' + friend + '_' + eve.ident, eve, empty);
+                    promises2.push(es_put_id('events', user_id + '_' + friend + '_' + eve.ident, eve, empty));
                 }
             }
         }
-    );
+    ));
 }
 
 function pageAll(resp, data, callback) {
