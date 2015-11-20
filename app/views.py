@@ -26,22 +26,14 @@ import json
 
 DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
-@app.route('/put_events/<user>', methods=['POST'])
-def put_events(user):
-    events = json.loads(request.data)
-    resp = ""
-    for event in events['my']:
-        event['user'] = user
-        event_id = event['id']
-        r = requests.put(DB+'/events/'+user+'_'+event_id, data=json.dumps(event))
-        resp += r.text
-    for event in events['of_friends']:
-        event['of_friend'] = user
-        event_id = event['id']
-        r = requests.put(DB+'/events'+user+'_'+event_id, data=json.dumps(event))
-        resp += r.text
 
-    return resp
+@app.route('/es_put', methods=['POST'])
+def put_events(user):
+    data = json.loads(request.data)
+    print 'put', data
+    r = requests.put(DB+'/'+data['table']+'/'+data['id'], data=json.dumps(data['doc']))
+    return r
+# ========
 
 from app.xmlToJson import xmlToJson
 from flask import make_response
@@ -53,3 +45,6 @@ def getCategories():
     return render_template("error.html")
     #url = DOMAIN + "/categories/list?app_key=" + API_KEY
     #return make_response(xmlToJson(url), 200)
+
+
+
