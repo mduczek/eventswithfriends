@@ -1,7 +1,7 @@
 from flask import render_template, request, make_response, jsonify
 
 from app import app
-
+import string
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -38,12 +38,14 @@ def db():
         r = requests.get(link)
         return r.text
     elif db_req['method'] == 'POST':
-        r = requests.post(link, data=db_req['query'])
+        q1 = filter(lambda x: x in string.printable, db_req['query'])
+        r = requests.post(link, data=q1)
         print r.text
         return r.text
     elif db_req['method'] == 'PUT':
         print 'in put'
-        r = requests.put(link, data=db_req['query'])
+        q1 = filter(lambda x: x in string.printable, db_req['query'])
+        r = requests.put(link, data=q1)
         print r.text
         return r.text
     else:
