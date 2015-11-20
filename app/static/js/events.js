@@ -89,9 +89,6 @@ function fetch_interests(json) {
     }
 }
 
-<<<<<<< HEAD
-function filter_location(json) {
-=======
 function get_shared_interests() {
     es_get_all("preferences", function(data) {
         var uid = FB.getUserID();
@@ -140,7 +137,6 @@ function get_shared_interests() {
 }
 
 function filter_location(json, callback) {
->>>>>>> 015ab6083aed33f2218f9ec6b32f4d46bf59f325
     var obj = new Object();
     fetch_interests(json);
     if (json._source.location) {
