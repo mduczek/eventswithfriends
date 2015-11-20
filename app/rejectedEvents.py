@@ -1,17 +1,25 @@
 # After rejecting event we add words to rejected_words table. It the word was rejected more than 5 times it goes to blacklist table.
 
 from event import *
-from stopwords import *		
+from stopwords import *
 import string
 
 import requests
 import json
+import os
+from settings import APP_STATIC
+from flask import make_response, request
 
 DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
+from app import app
 
-
-def dealWithRejectedEvent(uid, title, description):
+@app.route("/reject_event/<uid>", methods=["POST"])
+def dealWithRejectedEvent(uid):
+    print request.get_data()
+    data = json.loads(request.get_data())
+    title = data['title']
+    description = data['description']
     print 'title'
     print title
 
@@ -50,13 +58,14 @@ def dealWithRejectedEvent(uid, title, description):
     setToDump = {"rejected":savedRejectedWords,"blacklist":savedBlaclistedWords}
     print "setToDump to save"
     print setToDump
-    
+
     data = json.dumps(setToDump)
     print "data to save"
     print data
     r = requests.put(DB_PATH+'/blacklist/'+uid, data)
     print "Soooooo..."
-    print r.text	
+    print r.text
+    return make_response("")
 
 
 
@@ -72,7 +81,7 @@ def eventShouldBeBlackListed(uid, title, description):
 
     commonBlacklistedWords = eventKeywords & set(blacklistedWords)
 
-    print 'len(commonBlacklistedWords)'    
+    print 'len(commonBlacklistedWords)'
     print len(commonBlacklistedWords)
     print 'len(eventKeywords)'
     print len(eventKeywords)
@@ -91,11 +100,3 @@ def getBlacklistedWords(uid):
     words = json.loads(r.text)['_source']
     return words['blacklist'];
 
-
-
-
-# e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
-
-# test
-dealWithRejectedEvent("1", "title title", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda")
-print eventShouldBeBlackListed("1", "title", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda")

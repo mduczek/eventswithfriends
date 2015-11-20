@@ -1,7 +1,7 @@
 var CONF, es_get_all, es_put;
 
 CONF = {
-    DB: 'db'
+    DB: '/db'
 };
 
 function _es_db(db_req, callback) {
