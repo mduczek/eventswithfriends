@@ -11,12 +11,15 @@ DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchl
 
 
 
-def dealWithRejectedEvent(uid, json_event):
-    event = deserializeEvent(json_event)
-    # eventKeywords = set()
-    title = [word.strip(string.punctuation).lower() for word in event.description.split()]
-    descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
-    setOfRejectedWords = set(title) | (set(descr))
+def dealWithRejectedEvent(uid, title, description):
+    print 'title'
+    print title
+
+    print 'description'
+    print description
+    title = [word.strip(string.punctuation).lower() for word in str(description).split()]
+    descr = [word.strip(string.punctuation).lower() for word in str(title).split()]
+    setOfRejectedWords = set(title) | set(descr)
     setOfRejectedWords = setOfRejectedWords - GLOBAL_SET_OF_STOPWORDS
     uid = "1029457540454627"
     r = requests.get(DB_PATH+'/blacklist/'+uid)
@@ -59,11 +62,9 @@ def dealWithRejectedEvent(uid, json_event):
 
 
 # Checking if event has more then 20% of blacklisted words, in this case it won't be suggested
-def eventShouldBeBlackListed(uid, json_event):
-    event = deserializeEvent(json_event)
-    # eventKeywords = set()
-    title = [word.strip(string.punctuation).lower() for word in event.description.split()]
-    descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
+def eventShouldBeBlackListed(uid, title, description):
+    title = [word.strip(string.punctuation).lower() for word in str(description).split()]
+    descr = [word.strip(string.punctuation).lower() for word in str(title).split()]
     eventKeywords = set(title) | (set(descr))
 
     blacklistedWords = getBlacklistedWords(uid)
@@ -93,8 +94,8 @@ def getBlacklistedWords(uid):
 
 
 
-e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
+# e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
 
 # test
-dealWithRejectedEvent("1", e.serializeEvent())
-print eventShouldBeBlackListed("1", e.serializeEvent())
+dealWithRejectedEvent("1", "title title", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda")
+print eventShouldBeBlackListed("1", "title", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda")
