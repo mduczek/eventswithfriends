@@ -15,3 +15,7 @@ def login():
 @app.route('/events', methods=['GET', 'POST'])
 def events():
     return render_template('events.html')
+
+@app.route('/error', methods=['GET', 'POST'])
+def events():
+    return render_template('error.html')

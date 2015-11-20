@@ -13,6 +13,10 @@ var PAGES = [
         , login_required: true
         , main_function: events_main
     }
+    , {
+        addresses: ["/error"]
+        , login_required: false
+    }
 ];
 
 var CURRENT_PAGE = {};
@@ -58,6 +62,7 @@ $(document).ready(function () {
 
 function exit() {
     log("exit called");
+    redirect("/error");
     //top.location.href = 'https://www.facebook.com/appcenter/' + APP_NAMESPACE;
 }
 
