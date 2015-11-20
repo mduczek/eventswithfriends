@@ -1,13 +1,22 @@
-function publishEvent() {
-	// me/feed?tags=1028130340601200&privacy(value=SELF)&place =Warsaw&message="Hesdfsdfsfdfsdllo Hi Hi! Takeasdasdasd a look at this event, it mighasdasadasdt be awesome, we should go!!!"&access_token=CAACEdEose0cBAJXuWleUx0EtToPkLm5g8ZBwHbf7UCEuIxZCGbVAGB8yZCjUa485k8xqfXIMVLPGauxMoZBaN3ZANlXDd3ibR7yzsAGVGr1xUs1iSU91vDM7FgkKfyl6A9RGzpdCIvBa0KMiNycBjUEsYYS2F1mDj2ZCnau3v5rLZA2wUySOO1RGNKK9n08zJm6cZBOkVuLxOXMx8vojCYeY
+function testPublishingEvents() {
 
-	// tags: osoby
-	// miejsceid
+	// Cieplik 1028130340601200
+	// Milosz 948792808528908
+	// Duczi 100001711710125
 
+	var URL = "www.onet.pl";
+	var listOfFriends = "1028130340601200,948792808528908,100001711710125";
+
+	publishEvent(URL, listOfFriends);
+
+}
+
+// listOfFriends: lista idkow rozdzielonych przecinkami
+function publishEvent(url, listOfFriends) {
 	FB.api(
 	  '/me/feed',
 	  'POST',
-	  {"tags":"1028130340601200","dupa":"dupa","privacy(value":"SELF)","place":"Warsaw","message":"Hey, there is an event that might be interesting for us! Here you have some details:..."},
+	  {"tags":listOfFriends,"privacy:value":"SELF","message":"Hey, there is an event that might be interesting for us! Here you have some details:\n"+url},
 	  function(response) {
 	      log('Post dodany xoxo');
 	  }
