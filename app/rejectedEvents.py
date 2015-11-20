@@ -24,25 +24,26 @@ def dealWithRejectedEvent(uid, json_event):
 
 
 
-e = Event(1, "title", "url", "description dupa doda", "123", 0, "address", "datatime", "priority", "")
-
-# test
-dealWithRejectedEvent(1, e.serializeEvent())
-
 
 
 # Checking if event has more then 20% of blacklisted words, in this case it won't be suggested
 def eventShouldBeBlackListed(uid, json_event):
 	event = deserializeEvent(json_event)
 	# eventKeywords = set()
-	title = [word.strip(string.punctuation).lower() for word in event.desciption.split()]
+	title = [word.strip(string.punctuation).lower() for word in event.description.split()]
 	descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
 	eventKeywords = set(title) | (set(descr))
 
 	blacklistedWords = getBlacklistedWords(uid)
 
 
-	commonBlacklistedWords = eventKeywords & blacklistedWords
+	commonBlacklistedWords = eventKeywords & set(blacklistedWords)
+
+	print 'len(commonBlacklistedWords)'	
+	print len(commonBlacklistedWords)
+	print 'len(eventKeywords)'
+	print len(eventKeywords)
+
 
 	if len(commonBlacklistedWords) * 5 >= len(eventKeywords):
 		return True
@@ -52,3 +53,10 @@ def eventShouldBeBlackListed(uid, json_event):
 # Getting list of blacklisted words for given user
 def getBlacklistedWords(uid):
 	return ['dupa', 'doda']
+
+
+e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
+
+# test
+dealWithRejectedEvent(1, e.serializeEvent())
+print eventShouldBeBlackListed(1, e.serializeEvent())
