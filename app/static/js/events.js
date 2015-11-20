@@ -345,14 +345,15 @@ function create_events(events) {
     $('#page').html(html);
 }
 
-function putUserFriendsEvents() {
+function putUserFriendsEvents(callback) {
     var user_id = FB.getUserID();
-    promises.push(FB.api(
+    FB.api(
         '/me/friends',
         'GET',
         {"fields":"id,events{cover,start_time,description,place,name}"},
         function(response) {
             data = response.data;
+            var eventsMap = {};
             for (var i=0; i<data.length; i++) {
                 var events = data[i].events.data;
                 var friend = data[i].id;
@@ -385,12 +386,33 @@ function putUserFriendsEvents() {
                     eve['ident'] = ev['id'];
 
                     eve['user_id'] = user_id;
-                    eve['friend_id'] = friend;
-                    promises2.push(es_put_id('events', user_id + '_' + friend + '_' + eve.ident, eve, empty));
+                    eve['friend_id'] = [friend];
+
+                    if (eventsMap[user_id +'_'+ eve.ident]) {
+                        eventsMap[user_id +'_'+ eve.ident]['friend_id'].push(friend);
+                    } else {
+                        eventsMap[user_id +'_'+ eve.ident] = eve;
+                    }
                 }
             }
+            var keys_num = 0;
+            for (var ida in eventsMap) {
+                keys_num += 1;
+            }
+
+            var is_done = function() {
+                keys_num -= 1;
+                console.log(">>>", keys_num);
+                if (keys_num ==0) {
+                    callback();
+                }
+            };
+            for (var ida in eventsMap) {
+                //console.log(ida, eventsMap[ida]);
+                es_put_id('events', ida, eventsMap[ida], is_done);
+            }
         }
-    ));
+    );
 }
 
 function pageAll(resp, data, callback) {
