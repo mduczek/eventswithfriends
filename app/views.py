@@ -26,9 +26,6 @@ import json
 
 DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
-@app.route('/es_search', methods=['GET'])
-def search():
-    return 'searching'
 
 @app.route('/es_put', methods=['POST'])
 def put_events(user):
