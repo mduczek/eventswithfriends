@@ -48,5 +48,8 @@ def db():
         r = requests.put(link, data=q1)
         print r.text
         return r.text
-    else:
-        print 'unmatched'
+    elif db_req['method'] == 'SEARCH':
+        q1 = filter(lambda x: x in string.printable, db_req['query'])
+        r = requests.get(link, data=q1)
+        print r.text
+        return r.text

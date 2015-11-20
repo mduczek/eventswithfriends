@@ -177,10 +177,11 @@ function setCurrentUser() {
 function empty(r) {}
 
 function putUserEvents() {
+    var user_id = FB.getUserID();
     FB.api(
       '/me/events',
       'GET',
-      {"fields":"description,place,start_time"},
+      {"fields":"description,place,start_time,cover,name"},
       function(response) {
         var events = [];
         pageAll(response, events, function(events) {
@@ -194,11 +195,84 @@ function putUserEvents() {
 }
 
 
+function es_search(type_name, query, callback) {
+    var db_req = JSON.stringify({
+        index: type_name + "/_search",
+        method: 'SEARCH',
+        query: JSON.stringify(query)});
+    _es_db(db_req, callback);
+}
+
+function getEvents(description_q) {
+    var user_id = FB.getUserID();
+    MUST = []
+    MUST.push({"term": {
+                      "friend_of_user": {
+                        "value": user_id
+                      }
+                    }});
+    if (description_q) {
+        MUST.push({"match": { "description": description_q }})
+    };
+    
+    QUERY =
+        {
+          "query": {
+            "filtered": { 
+              "query": {
+                "bool": {
+                  "must": MUST
+                } 
+              },
+              "filter": {
+                "range": { "start_time": { "gte": "now-1d/d" }}
+              }
+            }
+          }
+        }
+    es_search('events', QUERY, function(r) {
+        friends = {};
+        evs = JSON.parse(r).hits.hits;
+        for (var i=0; i<evs.length; i++) {
+            var id = evs[i]['_source']['id'];
+            var x = friends[id];
+            var ev = evs[i]['_source'];
+            if (x) {
+                x['user'].push(ev['friend_id']);
+            } else {
+                ev['user'] = [ev['friend_id']];
+                friends[id] = ev;
+            }
+        }
+        ev = Object.keys(friends).map(function(key){return friends[key]});
+        create_events(ev);
+    });
+}
+
+images = {
+    "100001711710125":"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/v/t1.0-1/p50x50/10547465_767005763366474_5606662814702399442_n.jpg?oh=a2cd0e40eb1a09c90f5ebf7432e29bb9&oe=56E86360&__gda__=1454426521_edc204f85ac9fd1f985200b2025be62d"
+}
+
+function create_events(events) {
+    html = '';
+    for (var i = 0; i < events.length; i++) {
+        var ev = events[i];
+        html += '<div class="event">';
+        html += '<a href="https://www.facebook.com/events/'+ev['id']+'">'+ev['name']+'</a>';
+        html += '<span class="location">'+ev['place']['name']+'</span>'
+        html += '<img src="'+ev['cover']['source']+'"/>';
+        html += '</div>';
+
+    };
+    $('#page').html(html);
+}
+
 function putUserFriendsEvents() {
+    var user_id = FB.getUserID();
     FB.api(
         '/me/friends',
         'GET',
-        {"fields":"id,events"},
+        {"fields":"id,events{cover,start_time,description,place,name}"},
         function(response) {
             data = response.data;
             for (var i=0; i<data.length; i++) {
