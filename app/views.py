@@ -43,4 +43,13 @@ def put_events(user):
 
     return resp
 
+from app import app
+from xmlToJson import xmlToJson
+from flask import make_response
+API_KEY="FCp5nz27V5HGbWNx"
+DOMAIN="http://api.eventful.com/rest"
 
+@app.route('/eventfulApi/getCategories', methods=["GET", "POST"])
+def getCategories():
+    url = DOMAIN + "/categories/list?app_key=" + API_KEY
+    return make_response(xmlToJson(url), 200)
