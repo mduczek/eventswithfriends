@@ -41,7 +41,7 @@ function getPreferences(callback) {
                 log(friends);
                 log(interests);
 
-                es_put_id("preferences", uid, $.extend(interests, {location: location}, {friends: friends}), callback);
+                es_put_id("preferences", uid, $.extend({interests: interests}, {location: location}, {friends: friends}), callback);
 
             });
         });
