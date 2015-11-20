@@ -67,3 +67,26 @@ def db():
         r = requests.get(link, data=q1)
         print r.text
         return r.text
+
+from event import Event
+
+@app.route('/sorted', methods=['GET'])
+def sorted():
+    user = "1029457540454627"
+    Q = {
+    "query" : { "term" : { "user_id" : user } }, 
+    "sort": [{ "priority": { "order": "desc" } } ],
+    "size": 20
+    }
+    r = requests.get(DB_PATH+'/events/_search', data=json.dumps(Q))
+    hits = json.loads(r.text) 
+    events = []
+    for res in hits['hits']['hits']:
+        source = res['_source']
+        print source.keys()
+        events.append(Event(**source))
+    return events
+
+
+
+
