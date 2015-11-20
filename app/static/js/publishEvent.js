@@ -4,7 +4,7 @@ function testPublishingEvents() {
 	// Milosz 948792808528908
 	// Duczi 100001711710125
 
-	var URL = "www.onet.pl";
+	var URL = "https://www.facebook.com/events/1506641079651063/";
 	var listOfFriends = "1028130340601200,948792808528908,100001711710125";
 
 	publishEvent(URL, listOfFriends);
