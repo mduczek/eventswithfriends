@@ -14,8 +14,8 @@ def login():
 
 @app.route('/events/<user_id>', methods=['GET', 'POST'])
 def events(user_id):
-    #eventslist = getSortedEvents(user_id)
-    return render_template('events.html')
+    eventslist = getSortedEvents(user_id)
+    return render_template('events.html', events = eventslist)
 
 
 @app.route('/error', methods=['GET', 'POST'])

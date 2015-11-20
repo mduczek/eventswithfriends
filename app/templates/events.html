@@ -4,16 +4,27 @@
 
 <h2>Events</h2>
 
-<div class="events_in_location col-sm-12">
+<div class="col-sm-12">
     <h3>This events should interest you!</h3>
     <div class="events">
-
-    </div>
-
-</div>
-<div class="favorite_musician_city col-sm-12">
-    <h3>Checkout concerts in your city!</h3>
-    <div class="events">
+        {% for event in events %}
+            <h2>{{ event.title }}</h2>
+            <div class="col-sm-4 col-sm-offset-2">
+                {% if event.image %}
+                    <img src="{{ event.image }}" class="event_picture"/>
+                {% elif %}
+                    <img src="/static/placeholder-03.png" class="event_picture"/>
+                {% endif %}
+            </div>
+            <div class="col-sm-8">
+                <p class="address">{{ event.address }}</p>
+                <p class="datetime">{{ event.datetime }}</p>
+                {% if event.is_fb_event %}
+                    <img src="/static/fb.png" class="fb_picture"/>
+                {% endif %}
+                <!-- TODO suggested friends i przycisk z zaproszeniem -->
+            </div>
+        {% endofr %}
 
     </div>
 
