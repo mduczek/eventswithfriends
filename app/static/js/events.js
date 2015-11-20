@@ -1,22 +1,58 @@
 var eventful_events_locations = [];
 var eventful_events_interests_city = [];
-var eventful_events_interests_country = [];
 var interests = [];
-var city, country;
+var city;
 
 var NOTHING = "Unfortunately, there is no suggested event in this category...";
 var promises = [];
+var promises2 = [];
 
 function draw_empty(div) {
-    var d = $("<div/>").addClass("bg-danger").text(NOTHING);
-    log(d);
-    log($(div));
+    var d = $("<p/>").addClass("bg-danger").text(NOTHING);
     $(div).find(".events").append(d);
+}
+
+function draw_event(e, div) {
+    var d = $("<div/>").addClass("col-sm-12").addClass("event");
+    d.append($("<h4/>").text(e.title["#text"].data).addClass("col-sm-offset-2").addClass("col-sm-8"));
+    var img = $("<div/>").addClass("col-sm-4").addClass("col-sm-offset-2").addClass("text-center");
+    d.append(img);
+    var url = "";
+    if (e.image && e.image.medium && e.image.medium.url && e.image.medium.url["#text"]) {
+        url = e.image.medium.url["#text"].data.replace("/medium/", "/large/");
+    } else {
+        url = "/static/img/placeholder-03.png";
+    }
+    img.append($("<img/>").attr("src", url).width("100%"));
+
+    var det = $("<div/>").addClass("col-sm-6");
+    if (e.start_time && e.start_time["#text"]) {
+        det.append($("<p/>").addClass("time").text("Starts at: " + e.start_time["#text"].data));
+    }
+    if (e.venue_name && e.venue_name["#text"]) {
+        det.append($("<p/>").addClass("name").text(e.venue_name["#text"].data));
+    }
+    if (e.venue_address && e.venue_address["#text"]) {
+        det.append($("<p/>").addClass("address").text(e.venue_address["#text"].data));
+    }
+    if (e.url && e.url["#text"]) {
+        det.append($("<a/>").attr("href", e.url["#text"].data).text("Learn more..."));
+    }
+
+    det.append('<div><button onclick="testPublishingEvents()" class"btn btn-large btn-primary">Invite</button></div>');
+
+    d.append(det);
+
+
+    $(div).find(".events").append(d);
+
 }
 
 function draw_locations() {
     if (eventful_events_locations.length > 0) {
-
+        for (var i in eventful_events_locations) {
+            draw_event(eventful_events_locations[i], '.events_in_location');
+        }
     } else {
         draw_empty('.events_in_location');
     }
@@ -24,24 +60,18 @@ function draw_locations() {
 
 function draw_music_city() {
     if (eventful_events_interests_city.length > 0) {
+        for (var i in eventful_events_interests_city) {
+            draw_event(eventful_events_interests_city[i], '.favorite_musician_city');
+        }
 
     } else {
         draw_empty('.favorite_musician_city');
     }
 }
-function draw_music_country() {
-    if (eventful_events_interests_country.length > 0) {
-
-    } else {
-        draw_empty('.favorite_musician_country');
-    }
-}
-
 
 function draw() {
     draw_locations();
     draw_music_city();
-    draw_music_country();
 }
 
 function fetch_interests(json) {
@@ -65,8 +95,9 @@ function filter_location(json) {
     if (json._source.location) {
         var tmp = json._source.location.split(",");
         city = tmp[0];
-        country = tmp[1];
         obj.location = json._source.location;
+        obj.category = "music,movies_film,art,attractions,books";
+        obj.page_size = "50";
         promises.push(
                 filterEvents(obj, function (d) {
                     if (d[1].search.events.event) {
@@ -87,7 +118,6 @@ function filter_location(json) {
 }
 
 function filter_musicalEvents(json) {
-    log("callback called!");
     var musicians = json._source.interests.music;
     if (musicians) {
         for (var perf in musicians) {
@@ -95,15 +125,12 @@ function filter_musicalEvents(json) {
                     filterPerformers("", musicians[perf], function (d) {
                         if (d[1].search.performers.performer && d[1].search.performers.performer.id) {
                             var id = d[1].search.performers.performer.id["#text"].data;
-                            promises.push(performerEvents(id, function (dd) {
+                            promises2.push(performerEvents(id, function (dd) {
                                 if (dd[1].events.event) {
                                     var events = dd[1].events.event;
                                     for (var e in events) {
                                         if (events[e].city && events[e].city["#text"].data === city) {
                                             eventful_events_interests_city.push(events[e]);
-                                        }
-                                        if (events[e].country && events[e].country["#text"].data === country) {
-                                            eventful_events_interests_country.push(events[e]);
                                         }
                                     }
                                 }
@@ -123,7 +150,9 @@ function events_main() {
         filter_location(json);
         filter_musicalEvents(json);
         $.when.apply($, promises).then(function() {
-            draw();
+            $.when.apply($, promises2).then(function() {
+                draw();
+            });
         });
     });
 }
