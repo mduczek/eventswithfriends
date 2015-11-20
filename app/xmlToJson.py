@@ -1,6 +1,6 @@
 import simplejson as json
 from xml.dom import minidom
-import urllib2
+import requests
 
 def parse_element(element):
     dict_data = dict()
@@ -23,6 +23,6 @@ def parse_element(element):
     return element.nodeName, dict_data
 
 def xmlToJson(url):
-    result = urllib2.urlopen(url).read()
-    dom = minidom.parseString(result)
+    result = requests.get(url)
+    dom = minidom.parseString(result.text)
     return json.loads(json.dumps(parse_element(dom), sort_keys=True, indent=4))
