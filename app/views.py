@@ -44,7 +44,7 @@ def getCategories():
     print url
     result = xmlToJson(url)
     print result
-    return result
+    return make_response(result, 200)
 
 
 
