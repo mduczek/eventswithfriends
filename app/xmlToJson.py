@@ -25,4 +25,4 @@ def parse_element(element):
 def xmlToJson(url):
     result = requests.get(url)
     dom = minidom.parseString(result.text)
-    return json.loads(json.dumps(parse_element(dom), sort_keys=True, indent=4))
+    return json.dumps(parse_element(dom), sort_keys=True, indent=4)
