@@ -34,14 +34,17 @@ function getPreferences(callback) {
 
                 var friends = [];
                 $.each(response.data, function(idx, friend) {
-                    friends.push({"id": friend.id, "name": friend.name});
+                    FB.api("/" + friend.id + "/picture?type=large&redirect=false", "GET", function(response) {
+                        log(response.data.url);
+                        friends.push({"id": friend.id, "name": friend.name, "photo_url": response.data.url});
+
+                        log(location);
+                        log(friends);
+                        log(interests);
+
+                        es_put_id("preferences", uid, $.extend({interests: interests}, {location: location}, {friends: friends}), callback);
+                    });
                 });
-
-                log(location);
-                log(friends);
-                log(interests);
-
-                es_put_id("preferences", uid, $.extend({interests: interests}, {location: location}, {friends: friends}), callback);
 
             });
         });
