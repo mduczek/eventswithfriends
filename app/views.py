@@ -33,7 +33,7 @@ def db():
     db_req = json.loads(data)
     print db_req
     link = DB_PATH+'/'+db_req['index']
-    print link
+    print db_req['method'] == 'PUT'
     if db_req['method'] == 'GET':
         r = requests.get(link)
         return r.text
@@ -45,3 +45,5 @@ def db():
         r = requests.put(link, data=db_req['query'])
         print r.text
         return r.text
+    else:
+        print 'unmatched'
