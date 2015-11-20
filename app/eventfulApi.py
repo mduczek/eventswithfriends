@@ -1,5 +1,6 @@
 from app import app
 from xmlToJson import xmlToJson
+from flask import make_response
 #import ConfigParser
 
 #config = ConfigParser.RawConfigParser()
@@ -35,7 +36,7 @@ Supported filters:
 @app.route("/eventfulApi/getCategories", methods=["GET", "POST"])
 def getCategories():
     url = DOMAIN + "/categories/list?app_key=" + API_KEY
-    return xmlToJson(url)
+    return make_response(xmlToJson(url), 200)
 
 
 """ Filters all performers, either keywords parameter or category is required """
