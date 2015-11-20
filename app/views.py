@@ -42,6 +42,7 @@ def db():
         print r.text
         return r.text
     elif db_req['method'] == 'PUT':
+        print 'in put'
         r = requests.put(link, data=db_req['query'])
         print r.text
         return r.text
