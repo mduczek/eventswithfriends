@@ -23,6 +23,7 @@ def parse_element(element):
     return element.nodeName, dict_data
 
 def xmlToJson(url):
+    print "ccccc"
     result = requests.get(url)
     print result
     dom = minidom.parseString(result.text)
