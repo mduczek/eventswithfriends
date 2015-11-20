@@ -22,13 +22,13 @@ Supported filters:
     category - limits to categories returned by getCategories()
     others: check http://api.eventful.com/docs/events/search
 """
-@app.route("/eventfulApi/filterEvents", methods["GET"])
-def filterEvents(filterDictionary):
-    searchString = ""
-    for (key, value) in filterDictionary.items():
-        searchString += "&" + key + "=" + value
-    url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
-    return xmlToJson(url)
+#@app.route("/eventfulApi/filterEvents", methods["GET"])
+#def filterEvents(filterDictionary):
+    #searchString = ""
+    #for (key, value) in filterDictionary.items():
+        #searchString += "&" + key + "=" + value
+    #url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
+    #return xmlToJson(url)
 
 
 """ Returns the list of all categories """
