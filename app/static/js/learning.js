@@ -9,6 +9,6 @@ function getLocation(callback) {
 function learning_main() {
     log("learning script on");
     getLocation(filterEvents);
-
+    putUserFriendsEvents();
     log("learning script done");
 }

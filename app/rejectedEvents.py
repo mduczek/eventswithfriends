@@ -2,12 +2,13 @@
 
 from event import *
 from stopwords import *
-# from views import db
+import views
+import string
 
 def dealWithRejectedEvent(uid, json_event):
 	event = deserializeEvent(json_event)
 	# eventKeywords = set()
-	title = [word.strip(string.punctuation).lower() for word in event.desciption.split()]
+	title = [word.strip(string.punctuation).lower() for word in event.description.split()]
 	descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
 	setOfRejectedWords = set(title) | (set(descr))
 	setOfRejectedWords = setOfRejectedWords - GLOBAL_SET_OF_STOPWORDS
@@ -16,17 +17,12 @@ def dealWithRejectedEvent(uid, json_event):
 	# TODO
 
 	# Sprawdzanie czy tych rejected jest wiezej niz 5, jesli tak, to wrzucenie ich do blacklist
-	for rejectedWord : setOfRejectedWords:
+	for rejectedWord in setOfRejectedWords:
 		n = 0
 		# wyciagnac liczbe wystapien dla tego usera
 		# jak 5 to dodanie do blacklist
 
 
-
-e = Event("title", "url", "description", "123", 0, "address", "datatime", "priority")
-
-# test
-dealWithRejectedEvent(1, e.serializeEvent())
 
 
 
@@ -34,14 +30,20 @@ dealWithRejectedEvent(1, e.serializeEvent())
 def eventShouldBeBlackListed(uid, json_event):
 	event = deserializeEvent(json_event)
 	# eventKeywords = set()
-	title = [word.strip(string.punctuation).lower() for word in event.desciption.split()]
+	title = [word.strip(string.punctuation).lower() for word in event.description.split()]
 	descr = [word.strip(string.punctuation).lower() for word in event.title.split()]
 	eventKeywords = set(title) | (set(descr))
 
 	blacklistedWords = getBlacklistedWords(uid)
 
 
-	commonBlacklistedWords = eventKeywords & blacklistedWords
+	commonBlacklistedWords = eventKeywords & set(blacklistedWords)
+
+	print 'len(commonBlacklistedWords)'	
+	print len(commonBlacklistedWords)
+	print 'len(eventKeywords)'
+	print len(eventKeywords)
+
 
 	if len(commonBlacklistedWords) * 5 >= len(eventKeywords):
 		return True
@@ -51,3 +53,10 @@ def eventShouldBeBlackListed(uid, json_event):
 # Getting list of blacklisted words for given user
 def getBlacklistedWords(uid):
 	return ['dupa', 'doda']
+
+
+e = Event(1, "title", "url", "to nie jest spam lalala niedupa niedupa niedupa a a tatat gaf description dupa doda", "123", 0, "address", "datatime", "priority", "")
+
+# test
+dealWithRejectedEvent(1, e.serializeEvent())
+print eventShouldBeBlackListed(1, e.serializeEvent())
