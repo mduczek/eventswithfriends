@@ -6,6 +6,7 @@ import requests
 from xml.dom import minidom
 import string
 from app.event import Event
+from app.views import put_events
 
 
 API_KEY="FCp5nz27V5HGbWNx"
@@ -17,7 +18,7 @@ def getTagValue(dom, tagValue):
         return tag[0].firstChild.nodeValue
     return ""
 
-def getEventsFromUrl(url):
+def getEventsFromUrl(url, user_id):
     eventslist = []
     result = requests.get(url)
     result = filter(lambda x: x in string.printable, result.text)
@@ -29,7 +30,7 @@ def getEventsFromUrl(url):
         description = getTagValue(event, "description")
         image = getTagValue(event, "image")
         venue_address = getTagValue(event, "venue_address")
-        start_time = getTagValue(event, "start_time")
+        start_time = getTagValue(event, "start_time").replace(' ', 'T') # hotfix dla elastic searcha
         ident = event.attributes['id'].value
 
         eventslist.append(Event(ident, title, url, description, user_id, False, venue_address, start_time, 10, image))
@@ -56,7 +57,9 @@ def filterEvents(user_id, filterDictionary):
         searchString += "&" + key + "=" + value
     searchString += "&page_size=100"
     url = DOMAIN+"/events/search?app_key="+API_KEY+searchString
-    eventslist = getEventsFromUrl(url)
+    eventslist = getEventsFromUrl(url, user_id)
+
+    put_events(eventslist)
     # todo call do bazy
 
     resp = Response("", status=200, mimetype="application/xml")
@@ -86,7 +89,8 @@ def performerEvents(user_id, performerId):
     searchString = "&id=" + performerId
     url = DOMAIN + "/performers/events/list?app_key=" + API_KEY + searchString
     print url
-    eventslist = getEventsFromUrl(url)
+    eventslist = getEventsFromUrl(url, user_id)
+    put_events(eventslist)
     # todo call do bazy
     resp = Response("", status=200, mimetype="application/json")
     return resp
