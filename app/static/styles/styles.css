@@ -121,7 +121,7 @@ body.loading .loading-modal {
 .event {
     border: 1px solid #e0e0e0;
     border-radius: 10px;
-    min-height: 400px;
+    min-height: 600px;
     margin-bottom: 30px;
 }
 .event_picture {
@@ -149,3 +149,45 @@ div.delete {
     padding-top: 20px;
     margin-top: 10px;
 }
+
+.friend_picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    background-size: 100%;
+    cursor: pointer;
+}
+
+.friend_picture.attending:before {
+    border-radius: 20px;
+    -o-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    background: rgba(14,175,145,0.5);
+}
+
+.friend_picture.checked:before {
+    border-radius: 20px;
+    -o-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    background: rgba(179,137,199,0.5);
+}
+

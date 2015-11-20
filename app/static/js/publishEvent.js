@@ -1,5 +1,5 @@
-function inviteForEvent(url) {
-	var listOfFriends = "1028130340601200,948792808528908,100001711710125";
+function inviteForEvent(url, listOfFriends) {
+	//var listOfFriends = "1028130340601200,948792808528908,100001711710125";
 
 	publishEvent(url, listOfFriends);
 }
@@ -36,6 +36,12 @@ function publishEvent(url, listOfFriends) {
 $(function() {
    $(".invitation").click(function () {
         var url = $(this).attr("data-href");
-        inviteForEvent(url);
+        var friends = [];
+        log($(this).parent().parent());
+        $(this).parent().parent().find(".checked").each(function(){ 
+            log($(this));
+            friends.push($(this).attr("data-friend_id"));
+        });
+        inviteForEvent(url, friends);
    });
 });

@@ -6,21 +6,10 @@ var city;
 var NOTHING = "Unfortunately, there is no suggested event in this category...";
 var promises = [];
 var promises2 = [];
-//function events_main() {
 
-    //es_get_id("preferences", FB.getUserID(), function(json_data) {
-        //json = JSON.parse(json_data);
-        //filter_location(json);
-        //filter_musicalEvents(json);
-        //$.when.apply($, promises).then(function() {
-            //$.when.apply($, promises2).then(function() {
-                //draw();
-            //});
-        //});
-    //});
-//}
-//
-
+function hasClass( target, className ) {
+        return new RegExp('(\\s|^)' + className + '(\\s|$)').test(target.className);
+}
 $(function() {
     $(".description").click(function() {
         $(this).toggleClass("open");
@@ -43,6 +32,20 @@ $(function() {
             },
             error: function(error) {
                 console.log(error.responseText);
+            }
+        });
+    });
+
+    $(".friend_picture").each(function() {
+        var url = $(this).attr("data-profile");
+        $(this).css("background-image", "url("+url+")");
+        var going = $(this).attr("data-going"); 
+        if (going !== "0") {
+            $(this).addClass("attending");
+        }
+        $(this).click(function() {
+            if (!hasClass($(this), "attending")) {
+                $(this).toggleClass("checked");
             }
         });
     });
