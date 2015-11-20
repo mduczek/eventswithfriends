@@ -314,9 +314,9 @@ function getEvents(description_q) {
             var x = friends[id];
             var ev = evs[i]['_source'];
             if (x) {
-                x['user'].push(ev['friend_id']);
+                x['user_id'].push(ev['friend_id']);
             } else {
-                ev['user'] = [ev['friend_id']];
+                ev['user_id'] = [ev['friend_id']];
                 friends[id] = ev;
             }
         }
@@ -363,7 +363,9 @@ function putUserFriendsEvents() {
                     eve['url'] = FB_EVENT_PREFIX + ev['id'];
                     eve['description'] = ev['description']
                     if (ev['cover']) {
-                        eve['picture'] = ev['cover']['source'];
+                        eve['image'] = ev['cover']['source'];
+                    } else {
+                        eve['image'] = '';
                     }
                     var address = '';
                     if (ev['place']) {
@@ -380,11 +382,11 @@ function putUserFriendsEvents() {
                     }
                     eve['address'] = address;
                     eve['datetime'] = ev['start_time'];
-                    eve['id'] = ev['id'];
+                    eve['ident'] = ev['id'];
 
-                    eve['user'] = user_id;
+                    eve['user_id'] = user_id;
                     eve['friend_id'] = friend;
-                    es_put_id('events', user_id + '_' + friend + '_' + eve.id, eve, empty);
+                    es_put_id('events', user_id + '_' + friend + '_' + eve.ident, eve, empty);
                 }
             }
         }
