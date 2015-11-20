@@ -22,13 +22,15 @@
                     <p class="address">{{ event.address }}</p>
                     <p class="datetime">{{ event.datetime }}</p>
                     {% if event.is_fb_event %}
-                    <img src="/static/img/fb.png" class="fb_picture pull-right"/>
+                    <a href="http://facebook.com" title="This is a Facebook event">
+                        <img src="/static/img/fb.png" class="fb_picture pull-right"/>
+                    </a>
                     {% endif %}
-                    <p class="url"><a data-href="{{ event.url }}">Learn more..</a></p>
+                    <p class="url"><a href="{{ event.url }}">Learn more..</a></p>
                     <!-- TODO suggested friends i przycisk z zaproszeniem -->
                 </div>
                 <div class="text-center" style="position: absolute; bottom: 0px; left: 0px;width: 100%;">
-                    <button onclick="testPublishingEvents()" class="btn btn-large btn-primary col-sm-12 col-sm-offset-3">Invite</button>
+                    <button data-href="{{ event.url }}" class="invitation btn btn-large btn-primary col-sm-12 col-sm-offset-3">Invite</button>
                 </div>
             </div>
         </div>

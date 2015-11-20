@@ -62,7 +62,7 @@ def sorted(user):
             "term": {
               "user_id": user
             }
-          }
+          },
         }
       },
       "sort": [
