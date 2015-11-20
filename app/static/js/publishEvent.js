@@ -13,7 +13,7 @@ function testPublishingEvents() {
 
 // listOfFriends: lista idkow rozdzielonych przecinkami
 function publishEvent(url, listOfFriends) {
-	var privacy = {"value":"SELF"}
+	var privacy = {"value":"SELF"};
 
 	FB.api(
 	  '/me/feed',
