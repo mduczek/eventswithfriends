@@ -23,10 +23,10 @@ var CURRENT_PAGE = {};
 
 var DEBUG = true;
 
-//var fb_APP_ID = '1634260110184354'; // prod
-var fb_APP_ID = '1634512536825778'; // dev
-//var fb_APP_SECRET = '5f68dfa75dd179857cfa48c001fbd9c2'; // naaasty thingieees - prod
-var fb_APP_SECRET = 'c7f170914df631364c07951f039431c6'; // naaasty thingieees - dev
+var fb_APP_ID = '1634260110184354'; // prod
+//var fb_APP_ID = '1634512536825778'; // dev
+var fb_APP_SECRET = '5f68dfa75dd179857cfa48c001fbd9c2'; // naaasty thingieees - prod
+//var fb_APP_SECRET = 'c7f170914df631364c07951f039431c6'; // naaasty thingieees - dev
 var fb_APP_NAMESPACE = 'events-with-friends';
 var fb_PERMISSIONS = {};
 var fb_DEFAULT_PERMISSIONS = "user_friends";

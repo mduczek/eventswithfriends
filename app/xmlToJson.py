@@ -1,6 +1,7 @@
 import simplejson as json
 from xml.dom import minidom
 import requests
+import string
 
 def parse_element(element):
     dict_data = dict()
@@ -23,7 +24,8 @@ def parse_element(element):
     return element.nodeName, dict_data
 
 def xmlToJson(url):
-    result = requests.get("http://api.eventful.com/rest/events/search?app_key=FCp5nz27V5HGbWNx&location=Warsaw")
-    dom = minidom.parseString(result.text)
+    result = requests.get(url)
+    ql = filter(lambda x: x in string.printable, result.text)
+    dom = minidom.parseString(ql)
     ret = json.dumps(parse_element(dom), sort_keys=True, indent=4)
     return ret

@@ -1,5 +1,19 @@
 function events_main() {
     log("events_main");
+
+    eventful_events = [];
+
+    es_get_id("preferences", FB.getUserID(), function(json_data) {
+        json = JSON.parse(json_data);
+        log(json._source);
+        var obj = new Object();
+        obj.location = json._source.location;
+        filterEvents(obj, function (d) {
+            log(d[1].search.events.event);
+            eventful_events = $.merge(eventful_events, d[1].search.events.event);
+            log(eventful_events);
+        });
+    });
 }
 
 var user_id = undefined;
