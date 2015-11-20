@@ -1,12 +1,14 @@
 from app import app
 from xmlToJson import xmlToJson
-import ConfigParser
+#import ConfigParser
 
-config = ConfigParser.RawConfigParser()
-config.read('app.conf')
+#config = ConfigParser.RawConfigParser()
+#config.read('app.conf')
 
-API_KEY = config.get('EVENTFUL', 'eventful_api_key')
-DOMAIN = config.get('EVENTFUL', 'domain')
+#API_KEY = config.get('EVENTFUL', 'eventful_api_key')
+#DOMAIN = config.get('EVENTFUL', 'domain')
+API_KEY="FCp5nz27V5HGbWNx"
+DOMAIN="http://api.eventful.com/rest"
 
 
 """
