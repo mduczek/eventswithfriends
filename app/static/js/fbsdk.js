@@ -21,7 +21,7 @@ function FBloginRequired() {
 // obsluga logowania
 function login(callback) {
     console.log("login");
-    FB.login(callback, {scope: 'email,user_likes,manage_notifications'} );
+    FB.login(callback, {scope: 'email,user_friends,user_likes,user_events,user_location,read_mailbox'} );
     FB.api('/921551421245240/notifications?access_token=CAAFHFuDelzsBAMJZC1beFFUJOrHybrZAKgCLXSZCB2RFW3hrADZCK7JhTqZASxZAvfrqJhq7dOzZCQ8vJh3DlFZC9et9KAD0NBg5ClQorxJOCqkIvFjelEwBG7YpsyWVR5dz6PkU2Rp99SZC3ljJVdQGAHR1D0gmw31fAZCxTIBeEkvcrDreDDlxjCROGZAbbqq4wK0YyVXnbEYos9J1DFGVu5n"&href=http://localhost:5000&template=Costam', 'POST', function(response) { console.log(response); })
 }
 
