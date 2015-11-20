@@ -20,6 +20,53 @@ function fetch_interests(json) {
     }
 }
 
+function get_shared_interests() {
+    es_get_all("preferences", function(data) {
+        var uid = FB.getUserID();
+        log(uid);
+
+        var data = JSON.parse(data);
+        log(data);
+
+        var preferences = {};
+        if (data["hits"]["hits"] !== undefined) {
+            $.each(data["hits"]["hits"], function (idx, val) {
+                preferences[val._id] = val._source;
+            });
+        }
+
+        var sharedInterests = {};
+        $.each(preferences[uid].friends, function(idx, friend) {
+            if (!preferences[friend.id]) {
+                return; // continue inside $.each to skip friends who are not yet in the db
+            }
+
+            $.each(preferences[friend.id].interests, function(category, content) {
+                var sharedTitles = $(preferences[uid].interests[category]).filter(content).toArray();
+                $.each(sharedTitles, function(idx, sharedTitle) {
+                    if (!sharedInterests[sharedTitle]) {
+                        sharedInterests[sharedTitle] = [];
+                    }
+                    sharedInterests[sharedTitle].push(friend);
+                });
+
+                log("this");
+                log(preferences[uid].interests[category]);
+
+                log("against");
+                log(content);
+
+                log("shared interests");
+                log($(preferences[uid].interests[category]).filter(content).toArray());
+            });
+        });
+
+        log(sharedInterests);
+        
+        return sharedInterests;
+    });
+}
+
 function filter_location(json, callback) {
     var obj = new Object();
     fetch_interests(json);
