@@ -266,7 +266,7 @@ function putUserEvents() {
         var events = [];
         pageAll(response, events, function(events) {
             for (var i=0; i<events.length; i++) {
-                events[i]['user'] = user_id;
+                events[i]['user_my'] = user_id;
                 es_put_id('events', user_id + '_' + events[i].id, events[i], empty);
             }
         });
@@ -333,12 +333,14 @@ images = {
     "100001711710125":"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash2/v/t1.0-1/p50x50/10547465_767005763366474_5606662814702399442_n.jpg?oh=a2cd0e40eb1a09c90f5ebf7432e29bb9&oe=56E86360&__gda__=1454426521_edc204f85ac9fd1f985200b2025be62d"
 }
 
+FB_EVENT_PREFIX = "https://www.facebook.com/events/";
+
 function create_events(events) {
     html = '';
     for (var i = 0; i < events.length; i++) {
         var ev = events[i];
         html += '<div class="event">';
-        html += '<a href="https://www.facebook.com/events/'+ev['id']+'">'+ev['name']+'</a>';
+        html += '<a href="'+FB_EVENT_PREFIX+ev['id']+'">'+ev['name']+'</a>';
         html += '<span class="location">'+ev['place']['name']+'</span>'
         html += '<img src="'+ev['cover']['source']+'"/>';
         html += '</div>';
@@ -360,9 +362,33 @@ function putUserFriendsEvents() {
                 var friend = data[i].id;
                 for (var j=0; j<events.length; j++) {
                     var ev = events[j];
-                    ev['friend_of_user'] = user_id;
-                    ev['friend_id'] = friend;
-                    es_put_id('events', user_id + '_' + friend + '_' + ev.id, ev, empty);
+                    var eve = {};
+                    eve['title'] = ev['name'];
+                    eve['url'] = FB_EVENT_PREFIX + ev['id'];
+                    eve['description'] = ev['description']
+                    if (ev['cover']) {
+                        eve['picture'] = ev['cover']['source'];
+                    }
+                    var address = '';
+                    if (ev['place']) {
+                        var place = ev['place'];
+                        if (place['name']) {
+                            address += place['name'];
+                        }
+                        if (place['street']) {
+                            address += '\n' + place['street'];
+                        }
+                        if (place['city']) {
+                            address += '\n' + place['city'];
+                        }
+                    }
+                    eve['address'] = address;
+                    eve['datetime'] = ev['start_time'];
+                    eve['id'] = ev['id'];
+
+                    eve['user'] = user_id;
+                    eve['friend_id'] = friend;
+                    es_put_id('events', user_id + '_' + friend + '_' + eve.id, eve, empty);
                 }
             }
         }
