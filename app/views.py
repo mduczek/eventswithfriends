@@ -17,5 +17,5 @@ def events():
     return render_template('events.html')
 
 @app.route('/error', methods=['GET', 'POST'])
-def events():
+def error():
     return render_template('error.html')
