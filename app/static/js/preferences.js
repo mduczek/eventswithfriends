@@ -34,7 +34,7 @@ function getPreferences(callback) {
 
                 var friends = [];
                 $.each(response.data, function(idx, friend) {
-                    friends.push(friend.name);
+                    friends.push({"id": friend.id, "name": friend.name});
                 });
 
                 log(location);
