@@ -25,7 +25,7 @@ def parse_element(element):
 def xmlToJson(url):
     print "ccccc"
     result = requests.get("http://api.eventful.com/rest/events/search?app_key=FCp5nz27V5HGbWNx&location=Warsaw")
-    print result
+    print result.text
     dom = minidom.parseString(result.text)
     print dom
     ret = json.dumps(parse_element(dom), sort_keys=True, indent=4)
