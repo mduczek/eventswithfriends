@@ -9,3 +9,7 @@ function log(txt) {
     if (DEBUG)
         console.log(txt);
 }
+
+function redirect(url) {
+    $(window).attr('location', url);
+}

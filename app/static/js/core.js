@@ -8,6 +8,11 @@ var PAGES = [
         , login_required: true
         , main_function: learning_main
     }
+    , {
+        addresses: ["/events"]
+        , login_required: true
+        , main_function: events_main
+    }
 ];
 
 var CURRENT_PAGE = {};
