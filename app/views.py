@@ -29,14 +29,19 @@ DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchl
 @app.route('/db', methods=['POST'])
 def db():
     data = request.get_data()
+    print data
     db_req = json.loads(data)
+    print db_req
     link = DB_PATH+'/'+db_req['index']
+    print link
     if db_req['method'] == 'GET':
         r = requests.get(link)
         return r.text
     elif db_req['method'] == 'POST':
         r = requests.post(link, data=db_req['query'])
+        print r.text
         return r.text
     elif db_req['method'] == 'PUT':
         r = requests.put(link, data=db_req['query'])
+        print r.text
         return r.text
