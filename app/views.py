@@ -43,7 +43,7 @@ def put_events(user):
 
     return resp
 
-from xmlToJson import xmlToJson
+from app.xmlToJson import xmlToJson
 from flask import make_response
 API_KEY="FCp5nz27V5HGbWNx"
 DOMAIN="http://api.eventful.com/rest"
