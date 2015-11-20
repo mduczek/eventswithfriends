@@ -5,7 +5,7 @@ var PAGES = [
     }
     , {
         addresses: ["/login"]
-        , login_requires: true
+        , login_required: true
         , main_function: learning_main
     }
 ];
@@ -49,6 +49,7 @@ $(document).ready(function () {
     if (CURRENT_PAGE.login_required === true) {
         FBloginRequired();
     }
+    main();
 });
 
 function exit() {
