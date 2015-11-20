@@ -26,6 +26,17 @@ import json
 
 DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
+def put_events(events):
+    resp = ""
+    for event in events:
+        ident = event['ident']
+        event_str = json.dumps(event)
+        q1 = filter(lambda x: x in string.printable, event_str)
+        r = requests.put(DB_PATH+'/events/'+ident, data=q1)
+        resp += r.text
+    return resp
+
+
 @app.route('/db', methods=['POST'])
 def db():
     data = request.get_data()
