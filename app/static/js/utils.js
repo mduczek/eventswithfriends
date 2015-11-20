@@ -14,22 +14,4 @@ function redirect(url) {
     $(window).attr('location', url);
 }
 
-$(function() {
-    $(document).on("click", ".url a", function() {
-        var link = $(this).attr("data-href");
-        var dialog = $("<div/>").attr("title", "Event information");
 
-        var iframe = $("<iframe/>").attr("src", link).addClass("iframe");
-        dialog.append(iframe);
-
-        dialog.dialog({
-            width: 750,
-            height: 450,
-            modal: true,
-            close: function () {
-                dialog.remove();
-            }
-        });
-
-    });
-});
