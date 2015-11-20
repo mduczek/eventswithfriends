@@ -11,7 +11,7 @@ var PAGES = [
     , {
         addresses: ["/events"]
         , login_required: true
-        , main_function: events_main
+        //, main_function: events_main
     }
     , {
         addresses: ["/error"]

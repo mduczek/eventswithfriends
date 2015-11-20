@@ -6,6 +6,7 @@ import string
 #md ========
 import requests
 import json
+from rejectedEvents import eventShouldBeBlackListed
 
 DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
@@ -97,7 +98,11 @@ def login():
 def events(user_id):
     eventslist = sorted(user_id)
     print eventslist
-    return render_template('events.html', events = eventslist)
+    elists = []
+    for el in eventslist:
+        if not eventShouldBeBlackListed(user_id, el.title, el.description):
+            elists.append(el)
+    return render_template('events.html', events = elists)
 
 @app.route('/error', methods=['GET', 'POST'])
 def error():
