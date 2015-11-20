@@ -193,3 +193,4 @@ function addOneToFriendsMap(friend_id) {
 		myFriends.set(friend_id, 1);
 	}
 }
+	
