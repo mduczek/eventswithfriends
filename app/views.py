@@ -24,32 +24,27 @@ def error():
 import requests
 import json
 
-DB = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
+DB_PATH = "http://paas:bc9998c29d76573ab6b7196952e5490d@dwalin-us-east-1.searchly.com/esdb"
 
-@app.route('/put_events/<user>', methods=['POST'])
-def put_events(user):
-    events = json.loads(request.data)
-    resp = ""
-    for event in events['my']:
-        event['user'] = user
-        event_id = event['id']
-        r = requests.put(DB+'/events/'+user+'_'+event_id, data=json.dumps(event))
-        resp += r.text
-    for event in events['of_friends']:
-        event['of_friend'] = user
-        event_id = event['id']
-        r = requests.put(DB+'/events'+user+'_'+event_id, data=json.dumps(event))
-        resp += r.text
-
-    return resp
-
-from xmlToJson import xmlToJson
-from flask import make_response
-API_KEY="FCp5nz27V5HGbWNx"
-DOMAIN="http://api.eventful.com/rest"
-
-@app.route('/eventful_api/get_categories', methods=["GET", "POST"])
-def getCategories():
-    return render_template("error.html")
-    #url = DOMAIN + "/categories/list?app_key=" + API_KEY
-    #return make_response(xmlToJson(url), 200)
+@app.route('/db', methods=['POST'])
+def db():
+    data = request.get_data()
+    print data
+    db_req = json.loads(data)
+    print db_req
+    link = DB_PATH+'/'+db_req['index']
+    print db_req['method'] == 'PUT'
+    if db_req['method'] == 'GET':
+        r = requests.get(link)
+        return r.text
+    elif db_req['method'] == 'POST':
+        r = requests.post(link, data=db_req['query'])
+        print r.text
+        return r.text
+    elif db_req['method'] == 'PUT':
+        print 'in put'
+        r = requests.put(link, data=db_req['query'])
+        print r.text
+        return r.text
+    else:
+        print 'unmatched'
