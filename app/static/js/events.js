@@ -46,6 +46,8 @@ $(function() {
             });
         });
     });
+
+    $('#search_box').keyup(filter);
 });
 
 var user_id = undefined;
@@ -277,3 +279,29 @@ function pageAll(resp, data, callback) {
     }
 }
 
+function escapeSpecials(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
+function filter() {
+    var query = $('#search_box').val();
+    var escapedQuery = escapeSpecials(query);
+    var regex = new RegExp(escapedQuery, 'i');
+
+    $('.title').each(function() {
+        if (query == null ||
+            ($(this).html().length > 0 && $(this).html().match(regex))) {
+            $(this).parent('.event').show();
+        } else {
+            $(this).parent('.event').hide();
+        }
+    });
+    $('.description').each(function() {
+        if (query == null ||
+            ($(this).html().length > 0 && $(this).html().match(regex))) {
+            $(this).parent('.event').show();
+        } else {
+            $(this).parent('.event').hide();
+        }
+    });
+}
